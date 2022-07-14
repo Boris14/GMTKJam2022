@@ -20,7 +20,7 @@ function love.load()
 	
 	tick.recur(function () 
 			index = index + 1
-			if index > 7 then index = 1 end
+			if index > 5 then index = 1 end
 		end, 1)
 end
 
