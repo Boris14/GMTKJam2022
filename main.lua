@@ -1,15 +1,17 @@
 local index = 1
+tick = require("tick")
 
 function love.load()
 	love.graphics.setBackgroundColor(BG_COLOR)
+	
+	tick.recur(function () 
+			index = index + 1
+			if index > 7 then index = 1 end
+		end, 1)
 end
 
 function love.update(dt)
-	index = index + 1
-	if index > 7 then
-		index = 1
-	end
-	love.timer.sleep(1)
+	tick.update(dt)
 	love.graphics.setColor(PLAYER_COLORS[index])
 end
 
