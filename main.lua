@@ -1,5 +1,19 @@
+--For delaying functions 
+local tick = require("tick")
+
+--For collision detection
+local bump = require("bump")
+
+--For camera movement, rotation, etc.
+local camera = require("camera")
+
+--For vector math
+local vector = require("vector")
+
+
+
 local index = 1
-tick = require("tick")
+local world = bump.newWorld()
 
 function love.load()
 	love.graphics.setBackgroundColor(BG_COLOR)
