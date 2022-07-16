@@ -1,14 +1,14 @@
 
 require("platform")
 
-function createLevel(world, scale, levelTemplate)
+function createLevel(world, levelTemplate)
 	
 	local level = {} 
 
 	--Add the platforms
 	for i, v in ipairs(levelTemplate) do
 		level[i] = {}
-		level[i] = createPlatform(world, scale, v.x, v.y, v.width, v.height)
+		level[i] = createPlatform(world, v.x, v.y, v.width, v.height)
 	end
 
 	--Methods
