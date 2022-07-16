@@ -50,10 +50,8 @@ PLAYER_SPRITE_2 = "assets/characters/character_female.png"
 LEVEL_1 = {{}, {}}
 LEVEL_1[1].x = .7 -- * screenWidth
 LEVEL_1[1].y = .7 -- * screenHeight
-LEVEL_1[1].width = .2
-LEVEL_1[1].height = .05
+LEVEL_1[1].image = "assets/platforms/grass/ground_grass.png"
 
 LEVEL_1[2].x = .2 -- * screenWidth
 LEVEL_1[2].y = .6 -- * screenHeight
-LEVEL_1[2].width = .2
-LEVEL_1[2].height = .05
+LEVEL_1[2].image = "assets/platforms/grass/ground_grass_small.png"

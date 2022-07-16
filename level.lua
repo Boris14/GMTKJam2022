@@ -8,7 +8,7 @@ function createLevel(world, levelTemplate)
 	--Add the platforms
 	for i, v in ipairs(levelTemplate) do
 		level[i] = {}
-		level[i] = createPlatform(world, v.x, v.y, v.width, v.height)
+		level[i] = createPlatform(world, v.x, v.y, v.image)
 	end
 
 	--Methods

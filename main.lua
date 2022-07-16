@@ -58,10 +58,10 @@ function love.load()
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
 
   	--Set the local values
-  	player1 = createPlayer(world, .1, .8, CONTROLS_1, PLAYER_SPRITE_1)
-	player2 = createPlayer(world, .7, .8, CONTROLS_2, PLAYER_SPRITE_2)
+  player1 = createPlayer(world, 100, 100, CONTROLS_1, PLAYER_SPRITE_1)
+	player2 = createPlayer(world, 200, 100, CONTROLS_2, PLAYER_SPRITE_2)
+	ground = createPlatform(world, 0, .9, "assets/platforms/grass/ground_grass_broken.png")
 	base1 = createBase(world, true)
-	ground = createPlatform(world, 0, GROUND_LEVEL, 1, GROUND_HEIGHT)
 	level = createLevel(world, LEVEL_1)
 	dice = CreateDice(world, .2, .7)
 end
