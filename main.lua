@@ -28,7 +28,9 @@ function love.keypressed(key, scancode, isrepeat)
     if scancode == "escape" then
         love.event.quit(0)
     end
-
+    if key == "space" then
+        Dice.startRolling()
+    end
     player.handleKeyPressed(key)
 
 end

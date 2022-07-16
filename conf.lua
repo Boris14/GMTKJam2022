@@ -2,7 +2,7 @@ SMALL_VALUE = 0.1
 
 BG_COLOR = {1, 1, 1} --white
 
-BASE_COLOR = {0, 0, 0} --white
+BASE_COLOR = {1, 0.788, 0.235}
 
 PLAYER_COLORS = {
     {1, 0.788, 0.235}, --yellow
