@@ -13,6 +13,8 @@ function CreateDice(world, x, y)
     dice.isRolling = false
     dice.size = 64 * DICE_SCALE
 
+    dice.shrinkScale = 1
+
     --Animation related
     dice.spriteSheet = love.graphics.newImage("assets/dice/diceWhiteSprite.png")
     dice.grid = anim8.newGrid(64, 64, dice.spriteSheet:getWidth(), dice.spriteSheet:getHeight())
@@ -42,7 +44,14 @@ function CreateDice(world, x, y)
     end
 
     dice.pickUp = function (player)
+        if dice.isPickedUpBy then
+            dice.isPickedUpBy.hasDice = false
+            dice.isPickedUpBy.speed = dice.isPickedUpBy.speed / DICE_MOVEMENT_SLOW
+        end
         dice.isPickedUpBy = player
+        dice.shrinkScale = DICE_SHRINK_SCALE
+        player.speed = player.speed * DICE_MOVEMENT_SLOW
+        player.hasDice = true
     end
 
     --Default functions    
@@ -50,7 +59,7 @@ function CreateDice(world, x, y)
         
         ---Movement if player has taken it
         if dice.isPickedUpBy then
-            local actualX, actualY, cols, len = world:move(dice, dice.isPickedUpBy.x, dice.isPickedUpBy.y, dice.filter)
+            local actualX, actualY, cols, len = world:move(dice, dice.isPickedUpBy.x, dice.isPickedUpBy.y - 40, dice.filter)
             dice.x, dice.y = actualX, actualY
         end
     
@@ -61,7 +70,7 @@ function CreateDice(world, x, y)
     end
 
     dice.draw = function ()
-        dice.animation:draw(dice.spriteSheet, dice.x, dice.y, nil, DICE_SCALE)
+        dice.animation:draw(dice.spriteSheet, dice.x, dice.y, nil, DICE_SCALE * dice.shrinkScale)
     end
 
     return dice

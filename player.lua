@@ -13,6 +13,7 @@ function createPlayer(world, x, y, controls, sprite)
 
 	--Properties
 	player.size = PLAYER_SIZE
+	player.scale = PLAYER_SIZE / 186
 	player.speed = PLAYER_SPEED
 
 	--Controls
@@ -23,6 +24,7 @@ function createPlayer(world, x, y, controls, sprite)
 
 	player.isOnGround = true
 	player.isJumping = false
+	player.hasDice = false
 
 	--For delaying functions
 	player.tick = require("libraries.tick")
@@ -50,7 +52,7 @@ function createPlayer(world, x, y, controls, sprite)
 
 	player.animations = {}
 	player.animations.idle = player.anim8.newAnimation(player.grid(1, 1, 6, 3), 1)
-    player.animations.right = player.anim8.newAnimation(player.grid('7-9', 3), 0.2)
+    player.animations.right = player.anim8.newAnimation(player.grid('7-9', 3), 0.1)
     player.animations.up_right = player.anim8.newAnimation( player.grid(2, 1), 0.2)
 	player.animations.down_right = player.anim8.newAnimation(player.grid(9, 2), 0.2)
 	player.animations.left = player.animations.right:clone():flipH()
@@ -117,6 +119,14 @@ function createPlayer(world, x, y, controls, sprite)
 		player.tick.update(dt)
 		player.anim:update(dt)
 
+		--Wrap around map
+		if player.x + player.size/2 > love.graphics.getWidth() then
+			player.x = 0
+		elseif player.x < 0 then
+			player.x = love.graphics.getWidth() - player.size/2
+		end
+		world:update(player, player.x, player.y, player.size, player.size)
+
 		player.movingLeft = love.keyboard.isDown(player.left)
 		player.movingRight = love.keyboard.isDown(player.right)
 		player.isJumping = player.dy < 0
@@ -176,9 +186,9 @@ function createPlayer(world, x, y, controls, sprite)
 
 	player.draw = function ()
 		if player.isOnGround then
-			love.graphics.print("Is on ground", 100, 100)
+		--	love.graphics.print("Is on ground", 100, 100)
 		end
-		player.anim:draw(player.spriteSheet, player.x, player.y, nil, 0.31, 0.31, 0, player.size)
+		player.anim:draw(player.spriteSheet, player.x, player.y, nil, player.scale, player.scale, 0, player.size)
 	end
 
 	return player
