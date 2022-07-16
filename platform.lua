@@ -17,7 +17,7 @@ function createPlatform(world, x, y, image)
 
 	platform.draw = function ()
 		love.graphics.setColor(BASE_COLOR)
-		love.graphics.rectangle("fill", platform.x, platform.y, platform.width, platform.height)
+		-- love.graphics.rectangle("fill", platform.x, platform.y, platform.width, platform.height)
 		love.graphics.draw(platform.image, platform.x, platform.y, 0, scalingX, scalingY)
 	end
 
