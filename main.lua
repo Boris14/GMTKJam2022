@@ -10,26 +10,49 @@ local camera = require("libraries.camera")
 --For vector math
 local vector = require("libraries.vector")
 
---For animations
-local anim8 = require("libraries.anim8")
-
 require("dice")
+require("player")
+require("platform")
+require("level")
 
 
-local index = 1
 local world = bump.newWorld()
+local scale
+local player
+local ground
+local level
+
+
+
+function love.keypressed(key, scancode, isrepeat)
+    if scancode == "escape" then
+        love.event.quit(0)
+    end
+
+    player.handleKeyPressed(key)
+
+end
 
 function love.load()
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	love.graphics.setBackgroundColor(BG_COLOR)
+  	--Set the local values
+	scale =  (love.graphics.getWidth() + love.graphics.getHeight()) / 1000
+	player = createPlayer(world, scale, CONTROLS_1)
+	ground = createPlatform(world, scale, 0, 530, 1000, 50)
+	level = createLevel(world, scale, LEVEL_1)
 	CreateDice()
 end
 
 function love.update(dt)
 	tick.update(dt)
 	Dice.Update(dt)
+  player.update(dt)
 end
 
 function love.draw()
 	Dice.Draw()
+  player.draw()
+	ground.draw()
+	level.draw()
 end
