@@ -1,23 +1,25 @@
-anim8 = require("libraries.anim8")
 
-function createPlayer(world, controls)
+function createPlayer(world, x, y, controls, sprite)
 
 	local player = {}
 
+	player.anim8 = require("libraries.anim8")
+
+
 	--Animation
-	player.spriteSheet = love.graphics.newImage('assets/characters/character_female.png')
-	player.grid = anim8.newGrid(192, 256, player.spriteSheet:getWidth(), player.spriteSheet:getHeight())
+	player.spriteSheet = love.graphics.newImage(sprite)
+	player.grid = player.anim8.newGrid(192, 256, player.spriteSheet:getWidth(), player.spriteSheet:getHeight())
 
 	player.animations = {}
-	player.animations.idle = anim8.newAnimation(player.grid(1, 1, 6, 3), 1)
-    player.animations.right = anim8.newAnimation( player.grid('7-9', 3), 0.2)
-    player.animations.up_right = anim8.newAnimation( player.grid(2, 1), 0.2)
-	player.animations.down_right = anim8.newAnimation(player.grid(9, 2), 0.2)
+	player.animations.idle = player.anim8.newAnimation(player.grid(1, 1, 6, 3), 1)
+    player.animations.right = player.anim8.newAnimation(player.grid('7-9', 3), 0.2)
+    player.animations.up_right = player.anim8.newAnimation( player.grid(2, 1), 0.2)
+	player.animations.down_right = player.anim8.newAnimation(player.grid(9, 2), 0.2)
 	player.animations.left = player.animations.right:clone():flipH()
 	player.animations.up_left = player.animations.up_right:clone():flipH()
 	player.animations.down_left = player.animations.down_right:clone():flipH()
-	player.animations.up = anim8.newAnimation(player.grid(9,1), 0.2)
-	player.animations.down = anim8.newAnimation(player.grid(9,5), 0.2)
+	player.animations.up = player.anim8.newAnimation(player.grid(9,1), 0.2)
+	player.animations.down = player.anim8.newAnimation(player.grid(9,5), 0.2)
 
     player.anim = player.animations.idle
 
@@ -49,8 +51,8 @@ function createPlayer(world, controls)
 	end
 
 	--Location
-	player.x = 100
-	player.y = 500
+	player.x = x
+	player.y = y
 
 	--Acceleration
 	player.dx = 0
@@ -79,7 +81,7 @@ function createPlayer(world, controls)
 		end 
 	end
 
-	world:add(player, player.x, player.y, player.size, player.size) 
+	world:add(player, player.x + 5, player.y, player.size - 5, player.size) 
 
 	player.jumpPressed = false
 
@@ -110,8 +112,6 @@ function createPlayer(world, controls)
 		
 		player.tick.update(dt)
 		player.anim:update(dt)
-		--player.updateAnimation()
-
 
 		player.movingLeft = love.keyboard.isDown(player.left)
 		player.movingRight = love.keyboard.isDown(player.right)
@@ -160,16 +160,13 @@ function createPlayer(world, controls)
  				end
  			end
  		end
+ 		player.updateAnimation()
 
 
 	end
 
 	player.draw = function ()
-		if player.isOnGround then
-			love.graphics.print("Is on ground", 100, 100)
-		end
-		player.updateAnimation()
-		player.anim:draw(player.spriteSheet, player.x, player.y, nil, 0.2, 0.2, 0, player.size)
+		player.anim:draw(player.spriteSheet, player.x, player.y, nil, 0.31, 0.31, 0, player.size)
 	end
 
 	return player

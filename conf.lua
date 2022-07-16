@@ -35,6 +35,10 @@ CONTROLS_2.down = "down"
 CONTROLS_2.left = "left"
 CONTROLS_2.right = "right"
 
+PLAYER_SPRITE_1 = "assets/characters/character_male.png"
+PLAYER_SPRITE_2 = "assets/characters/character_female.png"
+
+
 LEVEL_1 = {{}, {}}
 LEVEL_1[1].x = .7 -- * screenWidth
 LEVEL_1[1].y = .7 -- * screenHeight

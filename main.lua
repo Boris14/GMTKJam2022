@@ -18,7 +18,8 @@ require("level")
 
 local world = bump.newWorld()
 local scale
-local player
+local player1
+local player2
 local ground
 local level
 
@@ -30,7 +31,8 @@ function love.keypressed(key, scancode, isrepeat)
     if key == "space" then
         Dice.startRolling()
     end
-    player.handleKeyPressed(key)
+    player1.handleKeyPressed(key)
+    player2.handleKeyPressed(key)
 
 end
 
@@ -53,7 +55,8 @@ function love.load()
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
 
   	--Set the local values
-	player = createPlayer(world, CONTROLS_1)
+  	player1 = createPlayer(world, 100, 100, CONTROLS_1, PLAYER_SPRITE_1)
+	player2 = createPlayer(world, 200, 100, CONTROLS_2, PLAYER_SPRITE_2)
 	ground = createPlatform(world, 0, .9, 1, .1)
 	level = createLevel(world, LEVEL_1)
 	CreateDice()
@@ -62,12 +65,14 @@ end
 function love.update(dt)
 	tick.update(dt)
 	Dice.Update(dt)
-    player.update(dt)
+	player2.update(dt)
+    player1.update(dt)
 end
 
 function love.draw()
 	Dice.Draw()
-    player.draw()
+    player1.draw()
+    player2.draw()
 	ground.draw()
 	level.draw()
 end
