@@ -22,6 +22,7 @@ local player1
 local player2
 local ground
 local level
+local dice
 
 
 function love.keypressed(key, scancode, isrepeat)
@@ -29,10 +30,10 @@ function love.keypressed(key, scancode, isrepeat)
         love.event.quit(0)
     end
     if key == "space" then
-        Dice.startRolling()
+        dice.startRolling()
     end
     player1.handleKeyPressed(key)
-    player2.handleKeyPressed(key)
+    --player2.handleKeyPressed(key)
 
 end
 
@@ -56,23 +57,23 @@ function love.load()
 
   	--Set the local values
   	player1 = createPlayer(world, 100, 100, CONTROLS_1, PLAYER_SPRITE_1)
-	player2 = createPlayer(world, 200, 100, CONTROLS_2, PLAYER_SPRITE_2)
+	--player2 = createPlayer(world, 200, 100, CONTROLS_2, PLAYER_SPRITE_2)
 	ground = createPlatform(world, 0, .9, 1, .1)
 	level = createLevel(world, LEVEL_1)
-	CreateDice()
+	dice = CreateDice(world, 100, 600)
 end
 
 function love.update(dt)
 	tick.update(dt)
-	Dice.Update(dt)
-	player2.update(dt)
+	dice.update(dt)
     player1.update(dt)
+    --player2.update(dt)
 end
 
 function love.draw()
-	Dice.Draw()
+	dice.draw()
     player1.draw()
-    player2.draw()
+    --player2.draw()
 	ground.draw()
 	level.draw()
 end

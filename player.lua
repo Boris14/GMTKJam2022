@@ -3,10 +3,48 @@ function createPlayer(world, x, y, controls, sprite)
 
 	local player = {}
 
-	player.anim8 = require("libraries.anim8")
+	--Location
+	player.x = x
+	player.y = y
+
+	--Acceleration
+	player.dx = 0
+	player.dy = MAX_GRAVITY
+
+	--Properties
+	player.size = PLAYER_SIZE
+	player.speed = PLAYER_SPEED
+
+	--Controls
+	player.jump = controls.jump
+	player.left = controls.left
+	player.right = controls.right
+	player.pickUp = controls.pickUp
+
+	player.isOnGround = true
+	player.isJumping = false
+
+	--For delaying functions
+	player.tick = require("libraries.tick")
+
+	--For collision
+	player.isPlayer = true
+	player.filter = function (item, other)
+		if other.isPlayer or other.isDice then 
+			return "cross"
+		end
+		return "slide"
+	end
+
+	world:add(player, player.x + 5, player.y, player.size - 5, player.size) 
+
+	player.jumpPressed = false
+	player.pickUpPressed = false
 
 
 	--Animation
+	player.anim8 = require("libraries.anim8")
+
 	player.spriteSheet = love.graphics.newImage(sprite)
 	player.grid = player.anim8.newGrid(192, 256, player.spriteSheet:getWidth(), player.spriteSheet:getHeight())
 
@@ -47,47 +85,10 @@ function createPlayer(world, x, y, controls, sprite)
 		else --Idle
 			player.anim = player.animations.idle
 		end
-
 	end
-
-	--Location
-	player.x = x
-	player.y = y
-
-	--Acceleration
-	player.dx = 0
-	player.dy = MAX_GRAVITY
-
-	--Properties
-	player.size = PLAYER_SIZE
-	player.speed = PLAYER_SPEED
-
-	--Controls
-	player.jump = controls.jump
-	player.down = controls.down
-	player.left = controls.left
-	player.right = controls.right
-
-	player.isOnGround = true
-	player.isJumping = false
-
-	player.tick = require("libraries.tick")
-
-	player.filter = function (item, other)
-		if other.isPlatform then 
-			return "slide"
-		else
-			return "slide"
-		end 
-	end
-
-	world:add(player, player.x + 5, player.y, player.size - 5, player.size) 
-
-	player.jumpPressed = false
 
 	--Methods
 	player.handleKeyPressed = function (key)
-		
 		if key == player.jump then
 			--Player wants to jump before he has hit the ground
 			if not player.jumpPressed and not player.isOnGround then
@@ -97,6 +98,9 @@ function createPlayer(world, x, y, controls, sprite)
 			elseif player.isOnGround then --Player jumps from the ground
 				player.executeJump()
 			end
+		elseif key == player.pickUp then
+			player.pickUpPressed = true
+			player.tick.delay(function() player.pickUpPressed = false end, 0.1)
 		end
 	end
 
@@ -158,6 +162,8 @@ function createPlayer(world, x, y, controls, sprite)
  					player.isOnGround = true
  					playerisJumping = false
  				end
+ 			elseif other.isDice and player.pickUpPressed then
+ 			    other.pickUp(player)
  			end
  		end
  		player.updateAnimation()
@@ -166,6 +172,9 @@ function createPlayer(world, x, y, controls, sprite)
 	end
 
 	player.draw = function ()
+		if player.isOnGround then
+			love.graphics.print("Is on ground", 100, 100)
+		end
 		player.anim:draw(player.spriteSheet, player.x, player.y, nil, 0.31, 0.31, 0, player.size)
 	end
 

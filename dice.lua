@@ -1,55 +1,68 @@
 local tick = require("libraries.tick")
 local anim8 = require("libraries.anim8")
 
-function CreateDice()
-    Dice = {}
-    Dice.x = 200
-    Dice.y = 300
-    Dice.value = 1
-    Dice.isRolling = false
+function CreateDice(world, x, y)
+    local dice = {}
+    dice.x = x
+    dice.y = y
+
+    dice.dx = 0
+    dice.dy = 0
+
+    dice.value = 1
+    dice.isRolling = false
+    dice.size = 64 * DICE_SCALE
 
     --Animation related
-    Dice.spriteSheet = love.graphics.newImage("assets/dice/diceWhiteSprite.png")
-    Dice.grid = anim8.newGrid(64, 64, Dice.spriteSheet:getWidth(), Dice.spriteSheet:getHeight())
-    Dice.animation = anim8.newAnimation(Dice.grid('1-3', 1, '1-3', 2), 0.2)
+    dice.spriteSheet = love.graphics.newImage("assets/dice/diceWhiteSprite.png")
+    dice.grid = anim8.newGrid(64, 64, dice.spriteSheet:getWidth(), dice.spriteSheet:getHeight())
+    dice.animation = anim8.newAnimation(dice.grid('1-3', 1, '1-3', 2), 0.2)
+
+    --Collision related
+    dice.isDice = true
+    world:add(dice, dice.x, dice.y, dice.size, dice.size)
+    dice.filter = function (item, other)
+        return "cross"
+    end
 
     --Methods
-    Dice.getRandomDice = function ()
+    dice.getRandomDice = function ()
         return love.math.random(6)
     end
 
-    Dice.startRolling = function ()
-        Dice.isRolling = true --Dice animation activates
+    dice.startRolling = function ()
+        dice.isRolling = true --Dice animation activates
         tick.delay(function ()
-            Dice.isRolling = false --Dice animation stops
+            dice.isRolling = false --Dice animation stops
         end, 2)
-        local number = Dice.getRandomDice()
-        Dice.animation:gotoFrame(number)
-        print("Number: " .. number)
-        if number == 1 then --The frame in the spreadsheet does not correspond to the value
-            Dice.value = 5
-        elseif number == 2 then
-            Dice.value = 3
-        elseif number == 3 then
-            Dice.value = 4
-        elseif number == 4 then
-            Dice.value = 6
-        elseif number == 5 then
-            Dice.value = 1
-        elseif number == 6 then
-            Dice.value = 2
-        end
-        print("Number: " .. number)
-        print("Dice value: " .. Dice.value)
+        local number = dice.getRandomDice()
+        dice.animation:gotoFrame(number)
+        dice.value = number
+        --For later NUMBERS
     end
+
+    dice.pickUp = function (player)
+        dice.isPickedUpBy = player
+    end
+
+    --Default functions    
+    dice.update = function (dt)
+        
+        ---Movement if player has taken it
+        if dice.isPickedUpBy then
+            local actualX, actualY, cols, len = world:move(dice, dice.isPickedUpBy.x, dice.isPickedUpBy.y, dice.filter)
+            dice.x, dice.y = actualX, actualY
+        end
     
-    --Default functions
-    Dice.Draw = function ()
-        Dice.animation:draw(Dice.spriteSheet, Dice.x, Dice.y, nil, DICE_SCALE)
-    end
-    Dice.Update = function (dt)
-        if Dice.isRolling then
-            Dice.animation:update(dt)
+
+        if dice.isRolling then
+            dice.animation:update(dt)
         end
     end
+
+    dice.draw = function ()
+        dice.animation:draw(dice.spriteSheet, dice.x, dice.y, nil, DICE_SCALE)
+    end
+
+    return dice
 end

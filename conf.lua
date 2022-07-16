@@ -25,15 +25,15 @@ DICE_SCALE = 0.9
 
 CONTROLS_1 = {}
 CONTROLS_1.jump = "w"
-CONTROLS_1.down = "s"
 CONTROLS_1.left = "a"
 CONTROLS_1.right = "d"
+CONTROLS_1.pickUp = "t"
 
 CONTROLS_2 = {}
 CONTROLS_2.jump = "up"
-CONTROLS_2.down = "down"
 CONTROLS_2.left = "left"
 CONTROLS_2.right = "right"
+CONTROLS_2.pickUp = "space"
 
 PLAYER_SPRITE_1 = "assets/characters/character_male.png"
 PLAYER_SPRITE_2 = "assets/characters/character_female.png"
