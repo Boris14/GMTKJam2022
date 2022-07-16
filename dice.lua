@@ -3,8 +3,8 @@ local anim8 = require("libraries.anim8")
 
 function CreateDice(world, x, y)
     local dice = {}
-    dice.x = x
-    dice.y = y
+    dice.x = x * love.graphics.getWidth()
+    dice.y = y * love.graphics.getHeight()
 
     dice.dx = 0
     dice.dy = 0
