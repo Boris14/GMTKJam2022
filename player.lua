@@ -4,8 +4,8 @@ function createPlayer(world, x, y, controls, sprite)
 	local player = {}
 
 	--Location
-	player.x = x
-	player.y = y
+	player.x = x * love.graphics.getWidth()
+	player.y = y * love.graphics.getHeight()
 
 	--Acceleration
 	player.dx = 0
@@ -188,7 +188,8 @@ function createPlayer(world, x, y, controls, sprite)
 		if player.isOnGround then
 		--	love.graphics.print("Is on ground", 100, 100)
 		end
-		player.anim:draw(player.spriteSheet, player.x, player.y, nil, player.scale, player.scale, 0, player.size)
+		--love.graphics.rectangle("line", player.x + 5, player.y, player.size - 5, player.size)
+		player.anim:draw(player.spriteSheet, player.x, player.y, nil, player.scale, player.scale, 0, 64)
 	end
 
 	return player
