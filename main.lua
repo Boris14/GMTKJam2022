@@ -1,34 +1,35 @@
 --For delaying functions 
-local tick = require("tick")
+local tick = require("libraries.tick")
 
 --For collision detection
-local bump = require("bump")
+local bump = require("libraries.bump")
 
 --For camera movement, rotation, etc.
-local camera = require("camera")
+local camera = require("libraries.camera")
 
 --For vector math
-local vector = require("vector")
+local vector = require("libraries.vector")
 
+--For animations
+local anim8 = require("libraries.anim8")
+
+require("dice")
 
 
 local index = 1
 local world = bump.newWorld()
 
 function love.load()
+	love.graphics.setDefaultFilter("nearest", "nearest")
 	love.graphics.setBackgroundColor(BG_COLOR)
-	
-	tick.recur(function () 
-			index = index + 1
-			if index > 5 then index = 1 end
-		end, 1)
+	CreateDice()
 end
 
 function love.update(dt)
 	tick.update(dt)
-	love.graphics.setColor(PLAYER_COLORS[index])
+	Dice.Update(dt)
 end
 
 function love.draw()
-	love.graphics.circle("fill", love.graphics.getWidth()/2, love.graphics.getHeight()/2, 100)
+	Dice.Draw()
 end

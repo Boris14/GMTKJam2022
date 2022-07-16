@@ -1,4 +1,3 @@
-
 BG_COLOR = {1, 1, 1} --white
 
 LINE_COLOR = {1, 1, 1} --white
