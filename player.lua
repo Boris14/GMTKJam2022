@@ -147,14 +147,11 @@ function createPlayer(world, x, y, controls, sprite)
 		local actualX, actualY, cols, len = world:move(player, goalX, goalY, player.filter)
  		player.x, player.y = actualX, actualY
 
- 		--Player falls from a platform
- 		if len == 0 and not player.isJumping and player.isOnGround then
- 			player.tick.delay(function() player.isOnGround = false end, 0.1)
- 		end
-
+ 		local hitsPlatform = false
  		for i = 1, len do
  			local other = cols[i].other
  			if other.isPlatform then
+ 				hitsPlatform = true
  				--Player hits a roof
  				if player.isJumping and cols[i].normal.y == 1 then
  					player.dy = 0
@@ -166,6 +163,12 @@ function createPlayer(world, x, y, controls, sprite)
  			    other.pickUp(player)
  			end
  		end
+
+ 		--Player falls from a platform
+ 		if not hitsPlatform and not player.isJumping and player.isOnGround then
+ 			player.tick.delay(function() player.isOnGround = false end, 0.1)
+ 		end
+
  		player.updateAnimation()
 
 
