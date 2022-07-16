@@ -51,17 +51,17 @@ function scaleConstants(screenWidth, screenHeight)
 end
 
 function love.load()
-	love.window.setFullscreen(true)
+	--love.window.setFullscreen(true)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	love.graphics.setBackgroundColor(BG_COLOR)
   	
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
 
   	--Set the local values
-  player1 = createPlayer(world, 100, 100, CONTROLS_1, PLAYER_SPRITE_1)
-	player2 = createPlayer(world, 200, 100, CONTROLS_2, PLAYER_SPRITE_2)
+    player1 = createPlayer(world, .1, .7, CONTROLS_1, PLAYER_SPRITE_1)
+	player2 = createPlayer(world, .1, .7, CONTROLS_2, PLAYER_SPRITE_2)
 	ground = createPlatform(world, 0, .9, "assets/platforms/grass/ground_grass_broken.png")
-	base1 = createBase(world, true)
+	base1 = createBase(world, false)
 	level = createLevel(world, LEVEL_1)
 	dice = CreateDice(world, .2, .7)
 end
@@ -79,4 +79,5 @@ function love.draw()
     player2.draw()
 	ground.draw()
 	level.draw()
+	base1.draw()
 end
