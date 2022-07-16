@@ -49,9 +49,46 @@ PLAYER_SPRITE_2 = "assets/characters/character_female.png"
 
 LEVEL_1 = {{}, {}}
 LEVEL_1[1].x = .7 -- * screenWidth
-LEVEL_1[1].y = .7 -- * screenHeight
-LEVEL_1[1].image = "assets/platforms/grass/ground_grass.png"
+LEVEL_1[1].y = .75 -- * screenHeight
+LEVEL_1[1].image = "assets/platforms/grass/ground_grass_broken.png"
 
 LEVEL_1[2].x = .2 -- * screenWidth
-LEVEL_1[2].y = .6 -- * screenHeight
-LEVEL_1[2].image = "assets/platforms/grass/ground_grass_small.png"
+LEVEL_1[2].y = .65 -- * screenHeight
+LEVEL_1[2].image = "assets/platforms/grass/ground_grass_small_broken.png"
+
+GROUND = {{},{},{},{},{},{},{},{},{}}
+GROUND[1].x = 0
+GROUND[1].y = 0.95
+GROUND[1].image = "assets/platforms/grass/ground_grass.png" 
+
+GROUND[2].x = 0.1
+GROUND[2].y = 0.95
+GROUND[2].image = "assets/platforms/grass/ground_grass.png" 
+
+GROUND[3].x = 0.2
+GROUND[3].y = 0.95
+GROUND[3].image = "assets/platforms/grass/ground_grass.png" 
+
+GROUND[4].x = 0.3
+GROUND[4].y = 0.95
+GROUND[4].image = "assets/platforms/grass/ground_grass.png" 
+
+GROUND[5].x = 0.4
+GROUND[5].y = 0.95
+GROUND[5].image = "assets/platforms/grass/ground_grass.png" 
+
+GROUND[6].x = 0.5
+GROUND[6].y = 0.95
+GROUND[6].image = "assets/platforms/grass/ground_grass.png" 
+
+GROUND[7].x = 0.6
+GROUND[7].y = 0.95
+GROUND[7].image = "assets/platforms/grass/ground_grass.png" 
+
+GROUND[8].x = 0.7
+GROUND[8].y = 0.95
+GROUND[8].image = "assets/platforms/grass/ground_grass.png" 
+
+GROUND[9].x = 0.8
+GROUND[9].y = 0.95
+GROUND[9].image = "assets/platforms/grass/ground_grass.png" 
