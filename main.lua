@@ -14,6 +14,7 @@ require("dice")
 require("player")
 require("platform")
 require("level")
+require("base")
 
 
 local world = bump.newWorld()
@@ -23,6 +24,7 @@ local player2
 local ground
 local level
 local dice
+local base1
 
 
 function love.keypressed(key, scancode, isrepeat)
@@ -56,11 +58,12 @@ function love.load()
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
 
   	--Set the local values
-  	player1 = createPlayer(world, 100, 100, CONTROLS_1, PLAYER_SPRITE_1)
-	player2 = createPlayer(world, 200, 100, CONTROLS_2, PLAYER_SPRITE_2)
-	ground = createPlatform(world, 0, .9, 1, .1)
+  	player1 = createPlayer(world, .1, .8, CONTROLS_1, PLAYER_SPRITE_1)
+	player2 = createPlayer(world, .7, .8, CONTROLS_2, PLAYER_SPRITE_2)
+	base1 = createBase(world, true)
+	ground = createPlatform(world, 0, GROUND_LEVEL, 1, GROUND_HEIGHT)
 	level = createLevel(world, LEVEL_1)
-	dice = CreateDice(world, 100, 600)
+	dice = CreateDice(world, .2, .7)
 end
 
 function love.update(dt)
