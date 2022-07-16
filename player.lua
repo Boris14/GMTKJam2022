@@ -9,8 +9,6 @@ function createPlayer(world, controls)
 	player.grid = anim8.newGrid(192, 256, player.spriteSheet:getWidth(), player.spriteSheet:getHeight())
 
 	player.animations = {}
-    -- player.animations.down = anim8.newAnimation( player.grid('1-4', 1), 0.2 )
-    -- player.animations.left = anim8.newAnimation( player.grid('1-4', 2), 0.2 )
 	player.animations.idle = anim8.newAnimation(player.grid(1, 1, 6, 3), 1)
     player.animations.right = anim8.newAnimation( player.grid('7-9', 3), 0.2)
     player.animations.up_right = anim8.newAnimation( player.grid(2, 1), 0.2)
@@ -22,6 +20,33 @@ function createPlayer(world, controls)
 	player.animations.down = anim8.newAnimation(player.grid(9,5), 0.2)
 
     player.anim = player.animations.idle
+
+    player.updateAnimation = function()
+   		 if player.isJumping then
+			if player.movingRight then
+				player.anim = player.animations.up_right
+			elseif player.movingLeft then
+				player.anim = player.animations.up_left
+			else
+				player.anim = player.animations.up
+			end
+		elseif not player.isOnGround then
+		    if player.movingRight then
+		    	player.anim = player.animations.down_right
+		    elseif player.movingLeft then
+		    	player.anim = player.animations.down_left
+		    else
+		    	player.anim = player.animations.down
+		    end
+		elseif player.movingRight then
+			player.anim = player.animations.right
+		elseif player.movingLeft then
+			player.anim = player.animations.left
+		else --Idle
+			player.anim = player.animations.idle
+		end
+
+	end
 
 	--Location
 	player.x = 100
@@ -41,7 +66,7 @@ function createPlayer(world, controls)
 	player.left = controls.left
 	player.right = controls.right
 
-	player.isOnGround = false
+	player.isOnGround = true
 	player.isJumping = false
 
 	player.tick = require("libraries.tick")
@@ -85,36 +110,22 @@ function createPlayer(world, controls)
 		
 		player.tick.update(dt)
 		player.anim:update(dt)
+		--player.updateAnimation()
 
 
-		local movingLeft = love.keyboard.isDown(player.left)
-		local movingRight = love.keyboard.isDown(player.right)
+		player.movingLeft = love.keyboard.isDown(player.left)
+		player.movingRight = love.keyboard.isDown(player.right)
 		player.isJumping = player.dy < 0
 
-		if (movingRight and movingLeft) or (not movingLeft and not movingRight) then
+		if (player.movingRight and player.movingLeft) or (not player.movingLeft and not player.movingRight) then
 			player.dx = 0
-			player.anim = player.animations.idle
-		elseif movingRight then
+		elseif player.movingRight then
 			player.dx = player.speed
-			player.anim = player.animations.right
 		else --Moving Left
-			player.anim = player.animations.left
 			player.dx = -player.speed
 		end
-		if player.isJumping and not (movingRight or movingLeft) then
-			player.anim = player.animations.up
-		elseif movingRight and player.isJumping then
-			player.anim = player.animations.up_right
-		elseif movingRight and not player.isOnGround then
-			player.anim = player.animations.down_right
-		elseif movingLeft and player.isJumping then
-			player.anim = player.animations.up_left
-		elseif movingLeft and not player.isOnGround then
-			player.anim = player.animations.down_left
-		elseif not player.isOnGround then
-			player.anim = player.animations.down
-		end
 
+		
 		if player.isJumping then
 			player.dy = player.dy + MAX_GRAVITY * dt * JUMP_FRICTION_MULTIPLIER
 		elseif player.isOnGround then
@@ -154,6 +165,10 @@ function createPlayer(world, controls)
 	end
 
 	player.draw = function ()
+		if player.isOnGround then
+			love.graphics.print("Is on ground", 100, 100)
+		end
+		player.updateAnimation()
 		player.anim:draw(player.spriteSheet, player.x, player.y, nil, 0.2, 0.2, 0, player.size)
 	end
 
