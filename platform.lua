@@ -1,11 +1,11 @@
 
 
-function createPlatform(world, scale, x, y, width, height)
+function createPlatform(world, x, y, width, height)
 	local platform = {}
-	platform.x = x
-	platform.y = y
-	platform.width = width * scale
-	platform.height = height * scale
+	platform.x = x * love.graphics.getWidth()
+	platform.y = y * love.graphics.getHeight()
+	platform.width = width * love.graphics.getWidth()
+	platform.height = height * love.graphics.getHeight()
 
 	--For collision recognition
 	platform.isPlatform = true

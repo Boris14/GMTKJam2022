@@ -23,36 +23,52 @@ local ground
 local level
 
 
-
 function love.keypressed(key, scancode, isrepeat)
     if scancode == "escape" then
         love.event.quit(0)
+    end
+    if key == "space" then
+        Dice.startRolling()
     end
 
     player.handleKeyPressed(key)
 
 end
 
+function scaleConstants(screenWidth, screenHeight)
+	local widthScale = screenWidth / 1000
+	local heightScale = screenHeight / 1000
+
+	MAX_GRAVITY = MAX_GRAVITY * heightScale
+	PLAYER_SPEED = PLAYER_SPEED * widthScale
+	PLAYER_JUMP_FORCE = PLAYER_JUMP_FORCE * heightScale
+	PLAYER_SIZE = PLAYER_SIZE * (widthScale + heightScale) / 2
+	DICE_SCALE = DICE_SCALE * (widthScale + heightScale) / 2
+end
+
 function love.load()
+	love.window.setFullscreen(true)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	love.graphics.setBackgroundColor(BG_COLOR)
+  	
+	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
+
   	--Set the local values
-	scale =  (love.graphics.getWidth() + love.graphics.getHeight()) / 1000
-	player = createPlayer(world, scale, CONTROLS_1)
-	ground = createPlatform(world, scale, 0, 530, 1000, 50)
-	level = createLevel(world, scale, LEVEL_1)
+	player = createPlayer(world, CONTROLS_1)
+	ground = createPlatform(world, 0, .9, 1, .1)
+	level = createLevel(world, LEVEL_1)
 	CreateDice()
 end
 
 function love.update(dt)
 	tick.update(dt)
 	Dice.Update(dt)
-  player.update(dt)
+    player.update(dt)
 end
 
 function love.draw()
 	Dice.Draw()
-  player.draw()
+    player.draw()
 	ground.draw()
 	level.draw()
 end
