@@ -1,5 +1,27 @@
+anim8 = require("libraries.anim8")
+
 function createPlayer(world, controls)
+
 	local player = {}
+
+	--Animation
+	player.spriteSheet = love.graphics.newImage('assets/characters/character_female.png')
+	player.grid = anim8.newGrid(192, 256, player.spriteSheet:getWidth(), player.spriteSheet:getHeight())
+
+	player.animations = {}
+    -- player.animations.down = anim8.newAnimation( player.grid('1-4', 1), 0.2 )
+    -- player.animations.left = anim8.newAnimation( player.grid('1-4', 2), 0.2 )
+	player.animations.idle = anim8.newAnimation(player.grid(1, 1, 6, 3), 1)
+    player.animations.right = anim8.newAnimation( player.grid('7-9', 3), 0.2)
+    player.animations.up_right = anim8.newAnimation( player.grid(2, 1), 0.2)
+	player.animations.down_right = anim8.newAnimation(player.grid(9, 2), 0.2)
+	player.animations.left = player.animations.right:clone():flipH()
+	player.animations.up_left = player.animations.up_right:clone():flipH()
+	player.animations.down_left = player.animations.down_right:clone():flipH()
+	player.animations.up = anim8.newAnimation(player.grid(9,1), 0.2)
+	player.animations.down = anim8.newAnimation(player.grid(9,5), 0.2)
+
+    player.anim = player.animations.idle
 
 	--Location
 	player.x = 100
@@ -56,11 +78,14 @@ function createPlayer(world, controls)
 		player.isJumping = true
 		player.isOnGround = false
 		player.jumpPressed = false
+
 	end
 
 	player.update = function (dt)
 		
 		player.tick.update(dt)
+		player.anim:update(dt)
+
 
 		local movingLeft = love.keyboard.isDown(player.left)
 		local movingRight = love.keyboard.isDown(player.right)
@@ -68,10 +93,26 @@ function createPlayer(world, controls)
 
 		if (movingRight and movingLeft) or (not movingLeft and not movingRight) then
 			player.dx = 0
+			player.anim = player.animations.idle
 		elseif movingRight then
 			player.dx = player.speed
+			player.anim = player.animations.right
 		else --Moving Left
+			player.anim = player.animations.left
 			player.dx = -player.speed
+		end
+		if player.isJumping and not (movingRight or movingLeft) then
+			player.anim = player.animations.up
+		elseif movingRight and player.isJumping then
+			player.anim = player.animations.up_right
+		elseif movingRight and not player.isOnGround then
+			player.anim = player.animations.down_right
+		elseif movingLeft and player.isJumping then
+			player.anim = player.animations.up_left
+		elseif movingLeft and not player.isOnGround then
+			player.anim = player.animations.down_left
+		elseif not player.isOnGround then
+			player.anim = player.animations.down
 		end
 
 		if player.isJumping then
@@ -113,13 +154,7 @@ function createPlayer(world, controls)
 	end
 
 	player.draw = function ()
-		love.graphics.setColor(PLAYER_COLORS[3])
-		love.graphics.rectangle("fill", player.x, player.y, player.size, player.size)
-		if player.isOnGround then
-			love.graphics.print("On the ground", 100, 100)
-		else
-			love.graphics.print("In the air", 100, 100)
-		end
+		player.anim:draw(player.spriteSheet, player.x, player.y, nil, 0.2, 0.2, 0, player.size)
 	end
 
 	return player

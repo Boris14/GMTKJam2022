@@ -11,7 +11,7 @@ function CreateDice()
     --Animation related
     Dice.spriteSheet = love.graphics.newImage("assets/dice/diceWhiteSprite.png")
     Dice.grid = anim8.newGrid(64, 64, Dice.spriteSheet:getWidth(), Dice.spriteSheet:getHeight())
-    Dice.animation = anim8.newAnimation(Dice.grid('1-3', '1-2'), 0.2)
+    Dice.animation = anim8.newAnimation(Dice.grid('1-3', 1, '1-3', 2), 0.2)
 
     --Methods
     Dice.getRandomDice = function ()
@@ -25,6 +25,7 @@ function CreateDice()
         end, 2)
         local number = Dice.getRandomDice()
         Dice.animation:gotoFrame(number)
+        print("Number: " .. number)
         if number == 1 then --The frame in the spreadsheet does not correspond to the value
             Dice.value = 5
         elseif number == 2 then

@@ -30,7 +30,6 @@ function love.keypressed(key, scancode, isrepeat)
     if key == "space" then
         Dice.startRolling()
     end
-
     player.handleKeyPressed(key)
 
 end
