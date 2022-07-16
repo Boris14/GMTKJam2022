@@ -1,15 +1,16 @@
 --For delaying functions 
-local tick = require("tick")
+local tick = require("libraries.tick")
 
 --For collision detection
-local bump = require("bump")
+local bump = require("libraries.bump")
 
 --For camera movement, rotation, etc.
-local camera = require("camera")
+local camera = require("libraries.camera")
 
 --For vector math
-local vector = require("vector")
+local vector = require("libraries.vector")
 
+require("dice")
 require("player")
 require("platform")
 require("level")
@@ -33,25 +34,25 @@ function love.keypressed(key, scancode, isrepeat)
 end
 
 function love.load()
+	love.graphics.setDefaultFilter("nearest", "nearest")
 	love.graphics.setBackgroundColor(BG_COLOR)
-
-	--Set the local values
+  	--Set the local values
 	scale =  (love.graphics.getWidth() + love.graphics.getHeight()) / 1000
 	player = createPlayer(world, scale, CONTROLS_1)
 	ground = createPlatform(world, scale, 0, 530, 1000, 50)
 	level = createLevel(world, scale, LEVEL_1)
-
+	CreateDice()
 end
 
 function love.update(dt)
-	--tick.update(dt)
-	player.update(dt)
+	tick.update(dt)
+	Dice.Update(dt)
+  player.update(dt)
 end
 
 function love.draw()
-	player.draw()
+	Dice.Draw()
+  player.draw()
 	ground.draw()
 	level.draw()
 end
-
-

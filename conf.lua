@@ -1,4 +1,3 @@
-
 SMALL_VALUE = 0.1
 
 BG_COLOR = {1, 1, 1} --white
