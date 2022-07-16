@@ -58,7 +58,7 @@ function love.load()
   	--Set the local values
   	player1 = createPlayer(world, 100, 100, CONTROLS_1, PLAYER_SPRITE_1)
 	player2 = createPlayer(world, 200, 100, CONTROLS_2, PLAYER_SPRITE_2)
-	ground = createPlatform(world, 0, .9, 1, .1)
+	ground = createPlatform(world, 0, .9, "assets/platforms/grass/ground_grass_broken.png")
 	level = createLevel(world, LEVEL_1)
 	dice = CreateDice(world, 100, 600)
 end
