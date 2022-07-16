@@ -1,6 +1,7 @@
 anim8 = require("libraries.anim8")
 
-function createPlayer(world, scale, controls)
+function createPlayer(world, controls)
+
 	local player = {}
 
 	--Animation
@@ -28,11 +29,11 @@ function createPlayer(world, scale, controls)
 
 	--Acceleration
 	player.dx = 0
-	player.dy = GRAVITY_FORCE
+	player.dy = MAX_GRAVITY
 
 	--Properties
-	player.size = PLAYER_SIZE * scale
-	player.speed = PLAYER_SPEED * scale
+	player.size = PLAYER_SIZE
+	player.speed = PLAYER_SPEED
 
 	--Controls
 	player.jump = controls.jump
@@ -40,7 +41,18 @@ function createPlayer(world, scale, controls)
 	player.left = controls.left
 	player.right = controls.right
 
+	player.isOnGround = false
+	player.isJumping = false
+
 	player.tick = require("libraries.tick")
+
+	player.filter = function (item, other)
+		if other.isPlatform then 
+			return "slide"
+		else
+			return "slide"
+		end 
+	end
 
 	world:add(player, player.x, player.y, player.size, player.size) 
 
@@ -78,7 +90,6 @@ function createPlayer(world, scale, controls)
 		local movingLeft = love.keyboard.isDown(player.left)
 		local movingRight = love.keyboard.isDown(player.right)
 		player.isJumping = player.dy < 0
-		player.isOnGround = player.dy >= GRAVITY_FORCE
 
 		if (movingRight and movingLeft) or (not movingLeft and not movingRight) then
 			player.dx = 0
@@ -105,9 +116,11 @@ function createPlayer(world, scale, controls)
 		end
 
 		if player.isJumping then
-			player.dy = player.dy + GRAVITY_FORCE * dt
-		elseif not player.isOnGround then
-			player.dy = player.dy + GRAVITY_FORCE * FALL_MULTIPLIER * dt			
+			player.dy = player.dy + MAX_GRAVITY * dt * JUMP_FRICTION_MULTIPLIER
+		elseif player.isOnGround then
+			player.dy = 0
+		elseif player.dy < MAX_GRAVITY then
+			player.dy = player.dy + MAX_GRAVITY * FALL_MULTIPLIER * dt		
 		end
 
 		if player.jumpPressed and player.isOnGround then
@@ -116,16 +129,23 @@ function createPlayer(world, scale, controls)
 
 		--Move the player and check collisions
 		local goalX, goalY = player.x + player.dx * dt, player.y + player.dy * dt
-		local actualX, actualY, cols, len = world:move(player, goalX, goalY)
+		local actualX, actualY, cols, len = world:move(player, goalX, goalY, player.filter)
  		player.x, player.y = actualX, actualY
+
+ 		--Player falls from a platform
+ 		if len == 0 and not player.isJumping and player.isOnGround then
+ 			player.tick.delay(function() player.isOnGround = false end, 0.1)
+ 		end
+
  		for i = 1, len do
  			local other = cols[i].other
  			if other.isPlatform then
  				--Player hits a roof
- 				if player.isJumping and cols[i].touch.y <= player.y then
+ 				if player.isJumping and cols[i].normal.y == 1 then
  					player.dy = 0
- 				else --Player hits the ground
+ 				elseif player.dy > 0 and cols[i].normal.y == -1 then --Player hits the ground
  					player.isOnGround = true
+ 					playerisJumping = false
  				end
  			end
  		end
@@ -134,8 +154,6 @@ function createPlayer(world, scale, controls)
 	end
 
 	player.draw = function ()
-		-- love.graphics.setColor(1,0,0, 0.7)
-		-- love.graphics.rectangle("fill", player.x, player.y, player.size, player.size)
 		player.anim:draw(player.spriteSheet, player.x, player.y, nil, 0.2, 0.2, 0, player.size)
 	end
 

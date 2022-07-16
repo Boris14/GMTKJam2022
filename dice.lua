@@ -1,5 +1,5 @@
 local tick = require("libraries.tick")
-local anim8= require("libraries.anim8")
+local anim8 = require("libraries.anim8")
 
 function CreateDice()
     Dice = {}
@@ -17,6 +17,7 @@ function CreateDice()
     Dice.getRandomDice = function ()
         return love.math.random(6)
     end
+
     Dice.startRolling = function ()
         Dice.isRolling = true --Dice animation activates
         tick.delay(function ()
@@ -38,12 +39,13 @@ function CreateDice()
         elseif number == 6 then
             Dice.value = 2
         end
-        print(Dice.value)
+        print("Number: " .. number)
+        print("Dice value: " .. Dice.value)
     end
     
     --Default functions
     Dice.Draw = function ()
-        Dice.animation:draw(Dice.spriteSheet, Dice.x, Dice.y, nil)
+        Dice.animation:draw(Dice.spriteSheet, Dice.x, Dice.y, nil, DICE_SCALE)
     end
     Dice.Update = function (dt)
         if Dice.isRolling then
