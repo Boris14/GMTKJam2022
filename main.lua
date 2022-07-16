@@ -21,8 +21,8 @@ local world = bump.newWorld()
 local scale
 local player1
 local player2
-local ground
 local level
+local ground
 local dice
 local base1
 
@@ -57,12 +57,13 @@ function love.load()
   	
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
 
-  	--Set the local values
-    player1 = createPlayer(world, .1, .7, CONTROLS_1, PLAYER_SPRITE_1)
+  --Set the local values
+  player1 = createPlayer(world, .1, .7, CONTROLS_1, PLAYER_SPRITE_1)
 	player2 = createPlayer(world, .1, .7, CONTROLS_2, PLAYER_SPRITE_2)
 	ground = createPlatform(world, 0, .9, "assets/platforms/grass/ground_grass_broken.png")
 	base1 = createBase(world, false)
 	level = createLevel(world, LEVEL_1)
+	ground = createLevel(world, GROUND)
 	dice = CreateDice(world, .2, .7)
 end
 
@@ -77,7 +78,7 @@ function love.draw()
 	dice.draw()
     player1.draw()
     player2.draw()
-	ground.draw()
 	level.draw()
 	base1.draw()
+	ground.draw()
 end
