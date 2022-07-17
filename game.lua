@@ -11,6 +11,8 @@ require("base")
 function createGame()
 	local game = {}
 
+	game.tick = require("libraries.tick")
+
 	game.start = function ()
 		if game.ready then return end
 		game.world = bump.newWorld()
@@ -20,9 +22,16 @@ function createGame()
 		game.base2 = createBase(game.world, false, game.player2)
 		game.level = createLevel(game.world, LEVEL_1)
 		game.ground = createLevel(game.world, GROUND)
-		game.dice = CreateDice(game.world, .2, .7)
+		game.dice = CreateDice(game.world, .48, .1)
 		game.ready = true
+		game.roundFinished = false
 	end
+
+	game.background = {}
+	game.background[1] = love.graphics.newImage("assets/background/bg_layer1.png")
+	game.background[2] = love.graphics.newImage("assets/background/bg_layer2.png")
+	game.background[3] = love.graphics.newImage("assets/background/bg_layer3.png")
+	game.background[4] = love.graphics.newImage("assets/background/bg_layer4.png")
 
 	game.start()
 
@@ -39,6 +48,13 @@ function createGame()
 		game.base2 = nil
 		game.ground = nil
 		game.dice = nil
+		game.player1 = nil
+		game.player2 = nil
+	end
+
+	game.restart = function()
+		game.stop()
+		game.start()
 	end
 
 	game.handleKeyPressed = function (key)
@@ -50,14 +66,26 @@ function createGame()
 	end
 
 	game.update = function(dt)
+		game.tick.update(dt)
 		if not game.ready then return end
+		if game.dice.hasRolled and not game.roundFinished then
+			game.roundFinished = true
+			game.tick.delay(function() 
+				game.restart()
+			end, 5)
+		end
 		game.dice.update(dt)
+		--if not game.roundFinished then
     	game.player1.update(dt)
     	game.player2.update(dt)
+    	--end
 	end
 
 	game.draw = function ()
 		if not game.ready then return end
+		for i,v in ipairs(game.background) do
+			love.graphics.draw(game.background[i], 0, -700)		
+		end
 		game.ground.draw()
 		game.level.draw()
 		game.base1.draw()
