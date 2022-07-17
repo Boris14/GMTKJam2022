@@ -98,7 +98,7 @@ function createGame()
 		for i,v in ipairs(game.background) do
 			love.graphics.draw(game.background[i], 0, -700)		
 		end
-		love.graphics.print(math.floor(game.timer/60) .. ":" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, 500, 100)
+		--Scale position
 		game.ground.draw()
 		game.level.draw()
 		game.base1.draw()
@@ -106,6 +106,11 @@ function createGame()
 		game.dice.draw()
 		game.player1.draw()
     	game.player2.draw()
+    	if math.floor(math.fmod(game.timer, 60)) < 10 then
+    		love.graphics.print(math.floor(game.timer/60) .. ":0" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, 500, 100)
+    	else
+    		love.graphics.print(math.floor(game.timer/60) .. ":" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, 500, 100)
+    	end
 	end
 
 	return game

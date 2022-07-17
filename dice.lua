@@ -14,7 +14,7 @@ function CreateDice(world, x, y)
     dice.hasRolled = false
     dice.size = 64 * DICE_SCALE
 
-    dice.shrinkScale = 1
+    dice.shrinkScale = 1.2
 
     --Animation related
     dice.spriteSheet = love.graphics.newImage("assets/dice/diceWhiteSprite.png")
@@ -39,7 +39,7 @@ function CreateDice(world, x, y)
         if dice.hasRolled then return 0 end
         dice.isRolling = true --Dice animation activates
         dice.shrinkScale = 1.2
-        dice.destination = {x = dice.x, y = dice.y - 100}
+        dice.destination = {x = dice.x, y = dice.y - DICE_ROLLING_ASCENT}
         tick.delay(function ()
             dice.hasRolled = true
             dice.isRolling = false --Dice animation stops
@@ -74,7 +74,7 @@ function CreateDice(world, x, y)
                 goalY = dice.destination.y
             else
                 goalX = dice.isPickedUpBy.x
-                goalY = dice.isPickedUpBy.y - 40
+                goalY = dice.isPickedUpBy.y - DICE_HOVER_DISTANCE
             end
             local actualX, actualY, cols, len = world:move(dice, goalX, goalY, dice.filter)
             dice.x, dice.y = actualX, actualY

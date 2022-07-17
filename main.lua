@@ -18,6 +18,9 @@ function scaleConstants(screenWidth, screenHeight)
 	PLAYER_JUMP_FORCE = PLAYER_JUMP_FORCE * heightScale
 	PLAYER_SIZE = PLAYER_SIZE * (widthScale + heightScale) / 2
 	DICE_SCALE = DICE_SCALE * (widthScale + heightScale) / 2
+	DICE_ROLLING_ASCENT = DICE_ROLLING_ASCENT * heightScale
+	DICE_HOVER_DISTANCE = DICE_HOVER_DISTANCE * heightScale
+	DICE_SPAWN.y = DICE_SPAWN.y * heightScale
 end
 
 function love.load()
