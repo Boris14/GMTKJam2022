@@ -11,6 +11,7 @@ function CreateDice(world, x, y)
 
     dice.value = 1
     dice.isRolling = false
+    dice.hasRolled = false
     dice.size = 64 * DICE_SCALE
 
     dice.shrinkScale = 1
@@ -33,25 +34,27 @@ function CreateDice(world, x, y)
     end
 
     dice.startRolling = function ()
+        if dice.hasRolled then return 0 end
         dice.isRolling = true --Dice animation activates
         tick.delay(function ()
+            dice.hasRolled = true
             dice.isRolling = false --Dice animation stops
         end, 2)
         local number = dice.getRandomDice()
         dice.animation:gotoFrame(number)
-        dice.value = number
+        return number
         --For later NUMBERS
     end
 
     dice.pickUp = function (player)
         if dice.isPickedUpBy then
-            dice.isPickedUpBy.hasDice = false
+            dice.isPickedUpBy.dice = nil
             dice.isPickedUpBy.speed = dice.isPickedUpBy.speed / DICE_MOVEMENT_SLOW
         end
         dice.isPickedUpBy = player
         dice.shrinkScale = DICE_SHRINK_SCALE
         player.speed = player.speed * DICE_MOVEMENT_SLOW
-        player.hasDice = true
+        player.dice = dice
     end
 
     --Default functions    

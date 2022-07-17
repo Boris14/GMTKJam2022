@@ -15,6 +15,7 @@ function createPlayer(world, x, y, controls, sprite)
 	player.size = PLAYER_SIZE
 	player.scale = PLAYER_SIZE / 186
 	player.speed = PLAYER_SPEED
+	player.score = 0
 
 	--Controls
 	player.jump = controls.jump
@@ -24,7 +25,7 @@ function createPlayer(world, x, y, controls, sprite)
 
 	player.isOnGround = true
 	player.isJumping = false
-	player.hasDice = false
+	player.dice = nil
 
 	--For delaying functions
 	player.tick = require("libraries.tick")
@@ -32,7 +33,7 @@ function createPlayer(world, x, y, controls, sprite)
 	--For collision
 	player.isPlayer = true
 	player.filter = function (item, other)
-		if other.isPlayer or other.isDice then 
+		if other.isPlayer or other.isDice or other.owner then 
 			return "cross"
 		end
 		return "slide"
@@ -42,7 +43,6 @@ function createPlayer(world, x, y, controls, sprite)
 
 	player.jumpPressed = false
 	player.pickUpPressed = false
-
 
 	--Animation
 	player.anim8 = require("libraries.anim8")
@@ -115,7 +115,6 @@ function createPlayer(world, x, y, controls, sprite)
 	end
 
 	player.update = function (dt)
-		
 		player.tick.update(dt)
 		player.anim:update(dt)
 
@@ -160,7 +159,9 @@ function createPlayer(world, x, y, controls, sprite)
  		local hitsPlatform = false
  		for i = 1, len do
  			local other = cols[i].other
- 			if other.isPlatform then
+ 			if other.owner == player and player.dice then
+ 				if not player.dice.isRolling then player.score = player.score + player.dice.startRolling() end
+ 			elseif other.isPlatform then
  				hitsPlatform = true
  				--Player hits a roof
  				if player.isJumping and cols[i].normal.y == 1 then
@@ -170,7 +171,7 @@ function createPlayer(world, x, y, controls, sprite)
  					playerisJumping = false
  				end
  			elseif other.isDice and player.pickUpPressed then
- 			    other.pickUp(player)
+ 			    other.pickUp(player)      
  			end
  		end
 
@@ -188,7 +189,7 @@ function createPlayer(world, x, y, controls, sprite)
 		if player.isOnGround then
 		--	love.graphics.print("Is on ground", 100, 100)
 		end
-		--love.graphics.rectangle("line", player.x + 5, player.y, player.size - 5, player.size)
+		love.graphics.rectangle("line", player.x + 5, player.y, player.size - 5, player.size)
 		player.anim:draw(player.spriteSheet, player.x, player.y, nil, player.scale, player.scale, 0, 64)
 	end
 

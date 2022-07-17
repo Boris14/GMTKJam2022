@@ -1,42 +1,14 @@
 --For delaying functions 
 local tick = require("libraries.tick")
 
---For collision detection
-local bump = require("libraries.bump")
-
---For camera movement, rotation, etc.
-local camera = require("libraries.camera")
-
---For vector math
-local vector = require("libraries.vector")
-
-require("dice")
-require("player")
-require("platform")
-require("level")
-require("base")
-
 local background = {}
-local world = bump.newWorld()
-local scale
-local player1
-local player2
-local level
-local ground
-local dice
-local base1
 
+require("game")
+
+local game
 
 function love.keypressed(key, scancode, isrepeat)
-    if scancode == "escape" then
-        love.event.quit(0)
-    end
-    if key == "space" then
-        dice.startRolling()
-    end
-    player1.handleKeyPressed(key)
-    player2.handleKeyPressed(key)
-
+    game.handleKeyPressed(key)
 end
 
 function scaleConstants(screenWidth, screenHeight)
@@ -61,30 +33,19 @@ function love.load()
   	
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
 
-  	--Set the local values
-	level = createLevel(world, LEVEL_1)
-  	player1 = createPlayer(world, 0.1, 0.7, CONTROLS_1, PLAYER_SPRITE_1)
-	player2 = createPlayer(world, 0.2, 0.8, CONTROLS_2, PLAYER_SPRITE_2)
-	ground = createLevel(world, GROUND)
-	dice = CreateDice(world, 0.48, 0.1)
-	base1 = createBase(world, true)
-
+  --Set the local values
+  	game = createGame()
 end
 
 function love.update(dt)
-	tick.update(dt)
-	dice.update(dt)
-    player1.update(dt)
-    player2.update(dt)
+	--tick.update(dt)
+	game.update(dt)
 end
 
 function love.draw()
 	for i,v in ipairs(background) do
 		love.graphics.draw(background[i], 0, -700)		
 	end
-	level.draw()
-	ground.draw()
-	dice.draw()
-    player1.draw()
-    player2.draw()
+
+	game.draw()
 end
