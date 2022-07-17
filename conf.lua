@@ -20,6 +20,10 @@ PLAYER_SPEED = 300
 PLAYER_JUMP_FORCE = 1100
 MAX_GRAVITY = 1200
 DICE_SCALE = 0.9
+POWERUP_SCALE = 0.8
+
+POWERUP_MOVEMENT_UPGRADE = 1.5
+POWERUP_MOVEMENT_DURATION = 4
 
 PLAYER_1_START = {x = .03, y = .84}
 PLAYER_2_START = {x = .91, y = .84}
@@ -45,12 +49,14 @@ CONTROLS_1.jump = "w"
 CONTROLS_1.left = "a"
 CONTROLS_1.right = "d"
 CONTROLS_1.pickUp = "t"
+CONTROLS_1.powerUp = "lshift"
 
 CONTROLS_2 = {}
 CONTROLS_2.jump = "up"
 CONTROLS_2.left = "left"
 CONTROLS_2.right = "right"
 CONTROLS_2.pickUp = "space"
+CONTROLS_2.powerUp = "rshift"
 
 PLAYER_SPRITE_1 = "assets/characters/character_male.png"
 PLAYER_SPRITE_2 = "assets/characters/character_female.png"

@@ -6,6 +6,7 @@ require("player")
 require("platform")
 require("level")
 require("base")
+require("powerup")
 
 
 function createGame()
@@ -29,7 +30,8 @@ function createGame()
 		game.base2 = createBase(game.world, false, game.player2)
 		game.level = createLevel(game.world, LEVEL_1)
 		game.ground = createLevel(game.world, GROUND)
-		game.dice = CreateDice(game.world, .48, .1)
+		game.dice = CreateDice(game.world, DICE_SPAWN.x, DICE_SPAWN.y)
+		game.powerups = {createPowerupPickup(game.world, .5, .4), createPowerupPickup(game.world, .6, .4)}
 		game.ready = true
 		game.roundFinished = false
 	end
@@ -87,6 +89,11 @@ function createGame()
 				game.newRound()
 			end, 2)
 		end
+		for i, v in ipairs(game.powerups) do
+			if v.checkToRemove(game.world) then
+				game.world:remove(v)
+			end
+		end
 		game.dice.update(dt)
     	game.player1.update(dt)
     	game.player2.update(dt)
@@ -104,6 +111,9 @@ function createGame()
 		game.base1.draw()
 		game.base2.draw()
 		game.dice.draw()
+		for i, v in ipairs(game.powerups) do
+			v.draw()
+		end
 		game.player1.draw()
     	game.player2.draw()
     	if math.floor(math.fmod(game.timer, 60)) < 10 then

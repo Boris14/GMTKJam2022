@@ -1,3 +1,5 @@
+require("powerup")
+
 
 function createPlayer(world, x, y, controls, sprite)
 
@@ -21,6 +23,9 @@ function createPlayer(world, x, y, controls, sprite)
 	player.left = controls.left
 	player.right = controls.right
 	player.pickUp = controls.pickUp
+	player.powerUp = controls.powerUp
+
+	player.powerups = 0
 
 	player.isOnGround = false
 	player.isJumping = false
@@ -107,6 +112,12 @@ function createPlayer(world, x, y, controls, sprite)
 		elseif key == player.pickUp then
 			player.pickUpPressed = true
 			player.tick.delay(function() player.pickUpPressed = false end, 0.1)
+		elseif key == player.powerUp then
+		    if player.powerups == 1 then
+
+		    elseif player.powerups == 2 then
+		        
+		    end
 		end
 	end
 
@@ -167,7 +178,12 @@ function createPlayer(world, x, y, controls, sprite)
 		 		local hitsPlatform = false
 		 		for i = 1, len do
 		 			local other = cols[i].other
-		 			if other.owner == player and player.dice then
+		 			if other.isPowerup then
+		 				if player.powerups >= 2 then break end
+		 				player.powerups = player.powerups + 1
+		 				other.destroy = true
+		 				--other.movement(player)
+		 			elseif other.owner == player and player.dice then
 		 				if not player.dice.isRolling then 
 		 					player.dice.startRolling() 
 		 					player.isRolling = true
