@@ -14,7 +14,7 @@ function createGame()
 
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	game.timer = ROUND_TIME
-	game.timerFont = love.graphics.newFont("assets/font/DiloWorld-mLJLv.ttf", 128)
+	game.timerFont = love.graphics.newFont("assets/font/DiloWorld-mLJLv.ttf", TIMER_FONT_SIZE)
 
 	game.tick = require("libraries.tick")
 
@@ -117,10 +117,12 @@ function createGame()
 		game.player1.draw()
     	game.player2.draw()
     	if math.floor(math.fmod(game.timer, 60)) < 10 then
-    		love.graphics.print(math.floor(game.timer/60) .. ":0" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, 500, 100)
+    		love.graphics.print(math.floor(game.timer/60) .. ":0" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, TIMER_POSITION.x * love.graphics.getWidth(), TIMER_POSITION.y * love.graphics.getHeight())
     	else
-    		love.graphics.print(math.floor(game.timer/60) .. ":" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, 500, 100)
+    		love.graphics.print(math.floor(game.timer/60) .. ":" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, TIMER_POSITION.x * love.graphics.getWidth(), TIMER_POSITION.y * love.graphics.getHeight())
     	end
+		love.graphics.print(game.player1Score .. "", PLAYER1_SCORE_POSITION.x * love.graphics.getWidth(), PLAYER1_SCORE_POSITION.y * love.graphics.getHeight())
+		love.graphics.print(game.player2Score .. "", PLAYER2_SCORE_POSITION.x * love.graphics.getWidth(), PLAYER2_SCORE_POSITION.y * love.graphics.getHeight())
 	end
 
 	return game

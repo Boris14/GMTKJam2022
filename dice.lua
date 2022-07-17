@@ -9,7 +9,7 @@ function CreateDice(world, x, y)
     dice.dx = 0
     dice.dy = 0
 
-    dice.value = 1
+    dice.value = 0
     dice.isRolling = false
     dice.hasRolled = false
     dice.size = 64 * DICE_SCALE
@@ -17,9 +17,28 @@ function CreateDice(world, x, y)
     dice.shrinkScale = 1.2
 
     --Animation related
-    dice.spriteSheet = love.graphics.newImage("assets/dice/diceWhiteSprite.png")
-    dice.grid = anim8.newGrid(64, 64, dice.spriteSheet:getWidth(), dice.spriteSheet:getHeight())
-    dice.animation = anim8.newAnimation(dice.grid('1-3', 1, '1-3', 2), 0.2)
+    -- dice.spriteSheet = love.graphics.newImage("assets/dice/diceWhiteSprite.png")
+    -- dice.grid = anim8.newGrid(64, 64, dice.spriteSheet:getWidth(), dice.spriteSheet:getHeight())
+    -- dice.animation = anim8.newAnimation(dice.grid('1-3', 1, '1-3', 2), 0.2)
+    dice.images = {}
+    dice.images[1] = love.graphics.newImage("assets/dice/dieWhite1.png")
+    dice.images[2] = love.graphics.newImage("assets/dice/dieWhite2.png")
+    dice.images[3] = love.graphics.newImage("assets/dice/dieWhite3.png")
+    dice.images[4] = love.graphics.newImage("assets/dice/dieWhite4.png")
+    dice.images[5] = love.graphics.newImage("assets/dice/dieWhite5.png")
+    dice.images[6] = love.graphics.newImage("assets/dice/dieWhite6.png")
+    dice.frame = 6
+    dice.anim_speed = 0
+
+    dice.animUpdate = function ()
+        if dice.anim_speed == 8 then --set interval of frame change
+            dice.frame = love.math.random(6)
+            dice.anim_speed = 0 --reset the speed to so the interval begins again
+        end
+        if dice.anim_speed < 8 then
+            dice.anim_speed = dice.anim_speed + 1
+        end
+    end
 
     --Collision related
     dice.isDice = true
@@ -29,9 +48,9 @@ function CreateDice(world, x, y)
     end
 
     --Methods
-    dice.getRandomDice = function ()
-        return love.math.random(6)
-    end
+    -- dice.getRandomDice = function ()
+    --     return love.math.random(6)
+    -- end
 
     dice.destination = {}
 
@@ -42,12 +61,10 @@ function CreateDice(world, x, y)
         dice.destination = {x = dice.x, y = dice.y - DICE_ROLLING_ASCENT}
         tick.delay(function ()
             dice.hasRolled = true
-            dice.isRolling = false --Dice animation stops
+            dice.isRolling = false--Dice animation stops
+            dice.value = dice.frame
         end, 4)
-        local number = dice.getRandomDice()
-        dice.animation:gotoFrame(number)
-        dice.value = number
-        --For later NUMBERS
+        -- dice.animation:gotoFrame(number)
     end
 
     dice.pickUp = function (player)
@@ -82,12 +99,15 @@ function CreateDice(world, x, y)
     
 
         if dice.isRolling then
-            dice.animation:update(dt)
+            -- dice.animation:update(dt)
+            dice.animUpdate()
         end
     end
 
     dice.draw = function ()
-        dice.animation:draw(dice.spriteSheet, dice.x, dice.y, nil, DICE_SCALE * dice.shrinkScale)
+        -- dice.animation:draw(dice.spriteSheet, dice.x, dice.y, nil, DICE_SCALE * dice.shrinkScale)
+        love.graphics.draw(dice.images[dice.frame],dice.x, dice.y, nil, DICE_SCALE * dice.shrinkScale)
+        
     end
 
     return dice
