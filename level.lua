@@ -12,6 +12,12 @@ function createLevel(world, levelTemplate)
 	end
 
 	--Methods
+	level.remove = function (world)
+		for i, v in ipairs(level) do
+			world:remove(v)
+		end
+	end
+
 	level.draw = function ()
 		for i, v in ipairs(level) do
 			v.draw()
