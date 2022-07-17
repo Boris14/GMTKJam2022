@@ -22,6 +22,7 @@ function scaleConstants(screenWidth, screenHeight)
 	DICE_HOVER_DISTANCE = DICE_HOVER_DISTANCE * heightScale
 	DICE_SPAWN.y = DICE_SPAWN.y * heightScale
 	POWERUP_SCALE = POWERUP_SCALE * (widthScale + heightScale) / 2
+	TIMER_FONT_SIZE = TIMER_FONT_SIZE * (widthScale + heightScale) / 2
 end
 
 function love.load()

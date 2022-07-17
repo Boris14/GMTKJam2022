@@ -7,6 +7,7 @@ require("platform")
 require("level")
 require("base")
 require("powerup")
+require("HUD")
 
 
 function createGame()
@@ -21,7 +22,7 @@ function createGame()
 	game.player1Score = 0
 	game.player2Score = 0
 
-
+	game.HUD = createHUD() 
 
 	game.roundStart = function ()
 		if game.ready then return end
@@ -111,6 +112,7 @@ function createGame()
     	game.player1.update(dt)
     	game.player2.update(dt)
 		if game.timer <= 0 then game.stop() end
+		game.HUD.update(game.player1Score, game.player2Score, game.player1.powerups, game.player2.powerups, game.timer, game.timerFont)
 	end
 
 	game.draw = function ()
@@ -129,29 +131,7 @@ function createGame()
 		end
 		game.player1.draw()
     	game.player2.draw()
-		if game.player1.powerups == 1 then
-			local powerup_img = love.graphics.newImage("assets/powerups/powerup_empty.png")
-			love.graphics.draw(powerup_img, PLAYER1_POWERUP_POSITION.x * love.graphics.getWidth(), PLAYER1_POWERUP_POSITION.y * love.graphics.getHeight(), 0, POWERUP_SCALE)
-		elseif game.player1.powerups == 2 then
-			local powerup_img = love.graphics.newImage("assets/powerups/powerup_gold.png")
-			love.graphics.draw(powerup_img, PLAYER1_POWERUP_POSITION.x * love.graphics.getWidth(), PLAYER1_POWERUP_POSITION.y * love.graphics.getHeight(), 0, POWERUP_SCALE)
-		end
-		if game.player2.powerups == 1 then
-			local powerup_img = love.graphics.newImage("assets/powerups/powerup_empty.png")
-			love.graphics.draw(powerup_img, PLAYER2_POWERUP_POSITION.x * love.graphics.getWidth(), PLAYER2_POWERUP_POSITION.y * love.graphics.getHeight(), 0, POWERUP_SCALE)
-		elseif game.player2.powerups == 2 then
-			local powerup_img = love.graphics.newImage("assets/powerups/powerup_gold.png")
-			love.graphics.draw(powerup_img, PLAYER2_POWERUP_POSITION.x * love.graphics.getWidth(), PLAYER2_POWERUP_POSITION.y * love.graphics.getHeight(), 0, POWERUP_SCALE)
-		end
-		love.graphics.setColor(PLAYER_COLORS[1])
-    	if math.floor(math.fmod(game.timer, 60)) < 10 then
-    		love.graphics.print(math.floor(game.timer/60) .. ":0" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, TIMER_POSITION.x * love.graphics.getWidth(), TIMER_POSITION.y * love.graphics.getHeight())
-    	else
-    		love.graphics.print(math.floor(game.timer/60) .. ":" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, TIMER_POSITION.x * love.graphics.getWidth(), TIMER_POSITION.y * love.graphics.getHeight())
-    	end
-		love.graphics.print(game.player1Score .. "", PLAYER1_SCORE_POSITION.x * love.graphics.getWidth(), PLAYER1_SCORE_POSITION.y * love.graphics.getHeight())
-		love.graphics.print(game.player2Score .. "", PLAYER2_SCORE_POSITION.x * love.graphics.getWidth(), PLAYER2_SCORE_POSITION.y * love.graphics.getHeight())
-		love.graphics.setColor(BASE_COLOR)
+		game.HUD.draw()
 	end
 
 	return game

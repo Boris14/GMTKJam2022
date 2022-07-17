@@ -9,7 +9,7 @@ function createBase(world, isRight, player)
 		base.platforms[2] = createPlatform(world, -0.02, .75, "assets/platforms/grass/ground_grass_90deg.png", .6)
 		base.platforms[3] = createPlatform(world, 0, .75, "assets/platforms/grass/gouble_grass.png", .7)
 	else
-		base.platforms[1] = createPlatform(world, .9, .92, "assets/platforms/bases/spring.png", 0.8)
+		base.platforms[1] = createPlatform(world, .9, .92, "assets/platforms/bases/spring_orange.png", 0.8)
 		base.platforms[1].owner = player
 		base.platforms[2] = createPlatform(world, .99, .75, "assets/platforms/grass/ground_grass_270deg.png", .6)
 		base.platforms[3] = createPlatform(world, .87, .75, "assets/platforms/grass/gouble_grass.png", .7)
