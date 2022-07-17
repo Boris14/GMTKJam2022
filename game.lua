@@ -10,6 +10,10 @@ require("base")
 
 function createGame()
 	local game = {}
+	--Timer
+	love.graphics.setDefaultFilter("nearest", "nearest")
+	game.timer = 120
+	game.timerFont = love.graphics.newFont("assets/font/DiloWorld-mLJLv.ttf", 128)
 
 	game.tick = require("libraries.tick")
 
@@ -71,6 +75,7 @@ function createGame()
 	game.update = function(dt)
 		game.tick.update(dt)
 		if not game.ready then return end
+		game.timer = game.timer - dt
 		if game.dice.hasRolled and not game.roundFinished then
 			game.roundFinished = true
 			if game.dice.isPickedUpBy == game.player1 then
@@ -85,6 +90,7 @@ function createGame()
 		game.dice.update(dt)
     	game.player1.update(dt)
     	game.player2.update(dt)
+		if game.timer <= 0 then game.stop() end
 	end
 
 	game.draw = function ()
@@ -96,6 +102,7 @@ function createGame()
 		game.level.draw()
 		game.base1.draw()
 		game.base2.draw()
+		love.graphics.print(math.floor(game.timer/60) .. ":" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, 500, 100)
 		game.dice.draw()
 		game.player1.draw()
     	game.player2.draw()

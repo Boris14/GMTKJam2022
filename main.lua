@@ -23,7 +23,8 @@ end
 function love.load()
 	love.window.setFullscreen(true)
 	love.graphics.setDefaultFilter("nearest", "nearest")
-  	
+	Font = love.graphics.newFont("assets/font/DiloWorld-mLJLv.ttf", 64)
+	love.graphics.setFont(Font)	
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
 
   --Set the local values
