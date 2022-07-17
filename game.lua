@@ -13,7 +13,10 @@ function createGame()
 
 	game.tick = require("libraries.tick")
 
-	game.start = function ()
+	game.player1Score = 0
+	game.player2Score = 0
+
+	game.roundStart = function ()
 		if game.ready then return end
 		game.world = bump.newWorld()
 		game.player1 = createPlayer(game.world, PLAYER_1_START.x, PLAYER_1_START.y, CONTROLS_1, PLAYER_SPRITE_1)
@@ -33,7 +36,7 @@ function createGame()
 	game.background[3] = love.graphics.newImage("assets/background/bg_layer3.png")
 	game.background[4] = love.graphics.newImage("assets/background/bg_layer4.png")
 
-	game.start()
+	game.roundStart()
 
 	game.stop = function ()
 		if not game.ready then return end
@@ -52,9 +55,9 @@ function createGame()
 		game.player2 = nil
 	end
 
-	game.restart = function()
+	game.newRound = function()
 		game.stop()
-		game.start()
+		game.roundStart()
 	end
 
 	game.handleKeyPressed = function (key)
@@ -70,15 +73,18 @@ function createGame()
 		if not game.ready then return end
 		if game.dice.hasRolled and not game.roundFinished then
 			game.roundFinished = true
+			if game.dice.isPickedUpBy == game.player1 then
+				game.player1Score = game.player1Score + game.dice.value
+			elseif game.dice.isPickedUpBy == game.player2 then
+			    game.player2Score = game.player2Score + game.dice.value
+			end
 			game.tick.delay(function() 
-				game.restart()
-			end, 5)
+				game.newRound()
+			end, 2)
 		end
 		game.dice.update(dt)
-		--if not game.roundFinished then
     	game.player1.update(dt)
     	game.player2.update(dt)
-    	--end
 	end
 
 	game.draw = function ()

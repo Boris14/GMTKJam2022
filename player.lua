@@ -15,7 +15,6 @@ function createPlayer(world, x, y, controls, sprite)
 	player.size = PLAYER_SIZE
 	player.scale = PLAYER_SIZE / 186
 	player.speed = PLAYER_SPEED
-	player.score = 0
 
 	--Controls
 	player.jump = controls.jump
@@ -167,7 +166,7 @@ function createPlayer(world, x, y, controls, sprite)
 	 			if other.owner == player and player.dice then
 	 				hitsPlatform = true
 	 				if not player.dice.isRolling then 
-	 					player.score = player.score + player.dice.startRolling() 
+	 					player.dice.startRolling() 
 	 					player.isRolling = true
 	 				end
 	 			elseif other.isPlatform then
