@@ -115,12 +115,11 @@ function createPlayer(world, x, y, controls, sprite)
 			player.pickUpPressed = true
 			player.tick.delay(function() player.pickUpPressed = false end, 0.1)
 		elseif key == player.powerUp and player.powerups > 0 then
-			player.tick.delay(function() player.powerupPicker.isDestroyed = true end, POWERUP_PICKER_TIME)
-		    if player.powerups == 1 then
-		    	player.powerupPicker = createPowerupPicker(player)
-		    elseif player.powerups == 2 then
-		        player.powerupPicker = createPowerupPicker(player)
-		    end
+			player.powerupPicker = createPowerupPicker(player)
+			player.tick.delay(function() 
+				player.powerupPicker.isDestroyed = true 
+				player.powerupPicker.movement(player)
+			end, POWERUP_PICKER_TIME)
 		    player.powerups = 0
 		end
 	end
@@ -185,7 +184,6 @@ function createPlayer(world, x, y, controls, sprite)
 		 				if player.powerups >= 2 then break end
 		 				player.powerups = player.powerups + 1
 		 				other.destroy = true
-		 				--other.movement(player)
 		 			elseif other.owner == player and player.dice then
 		 				if not player.dice.isRolling then 
 		 					player.dice.startRolling() 

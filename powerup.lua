@@ -15,16 +15,8 @@ function createPowerupPickup(world, x, y)
 	powerup.isPowerup = true
 	world:add(powerup, powerup.x, powerup.y, powerup.width, powerup.height)
 
-	powerup.tick = require("libraries.tick")
-
 	powerup.checkToRemove = function (world)
 		return powerup.destroy and world:hasItem(powerup)
-	end
-
-	powerup.movement = function(player)
-		player.speed = player.speed * POWERUP_MOVEMENT_UPGRADE
-		powerup.tick.delay(function() player.speed = PLAYER_SPEED end, POWERUP_MOVEMENT_DURATION)
-		powerup.destroy = true
 	end
 
 	powerup.draw = function ()
@@ -47,6 +39,8 @@ function createPowerupPicker(player)
 	powerup.height = powerup.image:getHeight() * POWERUP_SCALE
 	--Add animation for the picking of the powerup
 
+	powerup.tick = require("libraries.tick")
+
 	powerup.update = function(x, y)
 		powerup.x = x + PLAYER_SIZE/5
 		powerup.y = y - DICE_HOVER_DISTANCE * 2
@@ -56,11 +50,15 @@ function createPowerupPicker(player)
 		love.graphics.draw(powerup.image, powerup.x, powerup.y, 0, POWERUP_SCALE)
 	end
 
+	powerup.movement = function (player)
+		player.speed = player.speed * POWERUP_MOVEMENT_UPGRADE
+		powerup.tick.delay(function() player.speed = PLAYER_SPEED end, POWERUP_MOVEMENT_DURATION)
+		powerup.isDestroyed = true
+	end
+
 	powerup.isDestroyed = false
 
 	return powerup
 end
 
-function powerUp(player)
 
-end
