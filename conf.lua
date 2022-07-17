@@ -130,4 +130,41 @@ GROUND[3].y = 0.95
 GROUND[3].image = "assets/platforms/grass/ground_grass.png" 
 GROUND[3].scale = 2
 
+POWER_UPS = {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}
+
+POWER_UPS[1].x = 0.5
+POWER_UPS[1].y = 0.7
+
+POWER_UPS[2].x = 0.4
+POWER_UPS[2].y = 0.7
+
+POWER_UPS[3].x = 0.6
+POWER_UPS[3].y = 0.7
+
+POWER_UPS[4].x = 0.1
+POWER_UPS[4].y = 0.5
+
+POWER_UPS[5].x = 0.9
+POWER_UPS[5].y = 0.5
+
+POWER_UPS[6].x = 0.45
+POWER_UPS[6].y = 0.45
+
+POWER_UPS[7].x = 0.55
+POWER_UPS[7].y = 0.45
+
+POWER_UPS[8].x = 0.05
+POWER_UPS[8].y = 0.3
+
+POWER_UPS[9].x = 0.95
+POWER_UPS[9].y = 0.3
+
+POWER_UPS[10].x = 0.25
+POWER_UPS[10].y = 0.15
+
+POWER_UPS[11].x = 0.65
+POWER_UPS[11].y = 0.15
+
+
+
 

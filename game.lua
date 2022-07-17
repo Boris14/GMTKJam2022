@@ -21,9 +21,12 @@ function createGame()
 	game.player1Score = 0
 	game.player2Score = 0
 
+
+
 	game.roundStart = function ()
 		if game.ready then return end
 		game.world = bump.newWorld()
+		game.powerups = {}
 		game.player1 = createPlayer(game.world, PLAYER_1_START.x, PLAYER_1_START.y, CONTROLS_1, PLAYER_SPRITE_1)
 		game.player2 = createPlayer(game.world, PLAYER_2_START.x, PLAYER_2_START.y, CONTROLS_2, PLAYER_SPRITE_2)
 		game.base1 = createBase(game.world, true, game.player1)
@@ -31,7 +34,14 @@ function createGame()
 		game.level = createLevel(game.world, LEVEL_1)
 		game.ground = createLevel(game.world, GROUND)
 		game.dice = CreateDice(game.world, DICE_SPAWN.x, DICE_SPAWN.y)
-		game.powerups = {createPowerupPickup(game.world, .5, .4), createPowerupPickup(game.world, .6, .4)}
+		game.tick.recur(function ()
+			local i = love.math.random(11)
+			local j = love.math.random(11)
+			if (i == j) then i = i + 1 end
+			table.insert(game.powerups,createPowerupPickup(game.world, POWER_UPS[i].x, POWER_UPS[i].y))
+			table.insert(game.powerups,createPowerupPickup(game.world, POWER_UPS[j].x, POWER_UPS[j].y))
+		end, 15)
+		-- game.powerups = {createPowerupPickup(game.world, .5, .4), createPowerupPickup(game.world, .6, .4)}
 		game.ready = true
 		game.roundFinished = false
 	end
