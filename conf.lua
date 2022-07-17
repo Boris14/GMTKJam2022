@@ -31,7 +31,7 @@ PLAYER_1_START = {x = .03, y = .84}
 PLAYER_2_START = {x = .91, y = .84}
 DICE_SPAWN = {x = .48, y = .2}
 
-ROUND_TIME = 120
+ROUND_TIME = 10
 
 BASE_WIDTH = 0.2
 BASE_HEIGHT = 0.1

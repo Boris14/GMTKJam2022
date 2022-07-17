@@ -21,6 +21,7 @@ function createGame()
 
 	game.player1Score = 0
 	game.player2Score = 0
+	game.winner = nil
 
 	game.HUD = createHUD() 
 
@@ -81,8 +82,27 @@ function createGame()
 		if key == "escape" then
       		love.event.quit(0)
 	    end
-	    game.player1.handleKeyPressed(key)
-	    game.player2.handleKeyPressed(key)
+		if game.ready then
+			game.player1.handleKeyPressed(key)
+			game.player2.handleKeyPressed(key)
+		end
+		if not game.ready then
+			if key == START_GAME then
+				print("Im here")
+				game.newRound()
+			end
+		end
+	end
+
+	game.gameOver = function ()
+		if game.player1Score > game.player2Score then 
+			game.winner = "Player 1"
+		elseif game.player2Score > game.player1Score then
+			 game.winner = "Player 2"
+		elseif game.player1Score == game.player2Score then 
+			game.winner = "Nobody"
+		end
+		game.stop()
 	end
 
 	game.update = function(dt)
@@ -94,7 +114,7 @@ function createGame()
 			if game.dice.isPickedUpBy == game.player1 then
 				game.player1Score = game.player1Score + game.dice.value
 			elseif game.dice.isPickedUpBy == game.player2 then
-			    game.player2Score = game.player2Score + game.dice.value
+				game.player2Score = game.player2Score + game.dice.value
 			end
 			game.tick.delay(function() 
 				game.newRound()
@@ -116,23 +136,32 @@ function createGame()
 				game.player1.freezeOther = false
 			end, FREEZE_DURATION)
 		elseif game.player2.freezeOther then
-		    game.player1.isFrozen = true
-		    game.tick.delay(function() 
-		    	game.player1.isFrozen = false 
-		    	game.player2.freezeOther = false
-		    end, FREEZE_DURATION)
+			game.player1.isFrozen = true
+			game.tick.delay(function() 
+				game.player1.isFrozen = false 
+				game.player2.freezeOther = false
+			end, FREEZE_DURATION)
 		end
-    	game.player1.update(dt)
-    	game.player2.update(dt)
-		if game.timer <= 0 then game.stop() end
+		game.player1.update(dt)
+		game.player2.update(dt)
 		game.HUD.update(game.player1Score, game.player2Score, game.player1.powerups, game.player2.powerups, game.timer, game.timerFont)
+		if game.timer <= 0 then game.gameOver() end
 	end
 
 	game.draw = function ()
-		if not game.ready then return end
+		if not game.ready then
+			if game.winner ~= nil then
+				for i,v in ipairs(game.background) do
+					love.graphics.draw(game.background[i], 0, -700)		
+				end
+				love.graphics.print("The winner is " .. game.winner, 0.5, 0.5)
+			end
+			return
+		end
 		for i,v in ipairs(game.background) do
 			love.graphics.draw(game.background[i], 0, -700)		
 		end
+
 		--Scale position
 		game.ground.draw()
 		game.level.draw()

@@ -32,7 +32,7 @@ function love.load()
 	local music = love.audio.newSource( 'assets/sounds/background_song.mp3', 'static' )
 	music:setLooping( true ) --so it doesnt stop
 	music:play()
-	--love.window.setFullscreen(true)
+	love.window.setFullscreen(true)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	Font = love.graphics.newFont("assets/font/DiloWorld-mLJLv.ttf", 64)
 	love.graphics.setFont(Font)	
