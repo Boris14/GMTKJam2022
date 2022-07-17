@@ -25,6 +25,8 @@ end
 function love.load()
 	love.window.setFullscreen(true)
 	love.graphics.setDefaultFilter("nearest", "nearest")
+	Font = love.graphics.newFont("assets/font/DiloWorld-mLJLv.ttf", 64)
+	love.graphics.setFont(Font)
 	background[1] = love.graphics.newImage("assets/background/bg_layer1.png")
 	background[2] = love.graphics.newImage("assets/background/bg_layer2.png")
 	background[3] = love.graphics.newImage("assets/background/bg_layer3.png")
