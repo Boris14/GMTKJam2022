@@ -39,11 +39,26 @@ end
 function createPowerupPicker(player)
 	local powerup = {}
 
-	powerup.x = player.x
-	powerup.y = player.y - DICE_HOVER_DISTANCE
+	powerup.x = player.x + PLAYER_SIZE/2
+	powerup.y = player.y - DICE_HOVER_DISTANCE * 1.5
 
+	powerup.image = love.graphics.newImage("assets/powerups/powerup_empty.png")
+	powerup.width = powerup.image:getWidth() * POWERUP_SCALE
+	powerup.height = powerup.image:getHeight() * POWERUP_SCALE
 	--Add animation for the picking of the powerup
-		
+
+	powerup.update = function(x, y)
+		powerup.x = x + PLAYER_SIZE/5
+		powerup.y = y - DICE_HOVER_DISTANCE * 2
+	end
+
+	powerup.draw = function ()
+		love.graphics.draw(powerup.image, powerup.x, powerup.y, 0, POWERUP_SCALE)
+	end
+
+	powerup.isDestroyed = false
+
+	return powerup
 end
 
 function powerUp(player)

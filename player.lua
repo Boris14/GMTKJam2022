@@ -26,6 +26,8 @@ function createPlayer(world, x, y, controls, sprite)
 	player.powerUp = controls.powerUp
 
 	player.powerups = 0
+	player.powerupPicker = {}
+	player.powerupPicker.isDestroyed = true
 
 	player.isOnGround = false
 	player.isJumping = false
@@ -112,12 +114,14 @@ function createPlayer(world, x, y, controls, sprite)
 		elseif key == player.pickUp then
 			player.pickUpPressed = true
 			player.tick.delay(function() player.pickUpPressed = false end, 0.1)
-		elseif key == player.powerUp then
+		elseif key == player.powerUp and player.powerups > 0 then
+			player.tick.delay(function() player.powerupPicker.isDestroyed = true end, POWERUP_PICKER_TIME)
 		    if player.powerups == 1 then
-
+		    	player.powerupPicker = createPowerupPicker(player)
 		    elseif player.powerups == 2 then
-		        
+		        player.powerupPicker = createPowerupPicker(player)
 		    end
+		    player.powerups = 0
 		end
 	end
 
@@ -131,7 +135,6 @@ function createPlayer(world, x, y, controls, sprite)
 	player.update = function (dt)
 		player.tick.update(dt)
 		player.anim:update(dt)
-
 		if not player.isRolling then
 			--Wrap around map
 			if player.x + player.size/2 > love.graphics.getWidth() then
@@ -209,11 +212,15 @@ function createPlayer(world, x, y, controls, sprite)
 		 		end
 	 		end
  		end
+ 		if player.powerupPicker.isDestroyed == false then
+			player.powerupPicker.update(player.x, player.y)
+		end
  		player.updateAnimation()
 	end
 
 	player.draw = function ()
 		--love.graphics.rectangle("line", player.x + 5, player.y, player.size - 5, player.size)
+		if not player.powerupPicker.isDestroyed then player.powerupPicker.draw() end
 		player.anim:draw(player.spriteSheet, player.x, player.y, nil, player.scale, player.scale, 0, 64)
 	end
 
