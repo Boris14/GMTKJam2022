@@ -8,8 +8,13 @@ local game
 local menu
 
 function love.keypressed(key, scancode, isrepeat)
+	if key == "escape" then
+    	love.event.quit(0)
+	end
 	menu.handleKeyPressed(key)
-    game.handleKeyPressed(key)
+	if menu.startGame then
+    	game.handleKeyPressed(key)
+    end
 end
 
 function scaleConstants(screenWidth, screenHeight)
@@ -31,6 +36,7 @@ end
 function love.load()
 	local music = love.audio.newSource( 'assets/sounds/background_song.mp3', 'static' )
 	music:setLooping( true ) --so it doesnt stop
+	music:setVolume(0.2)
 	music:play()
 	love.window.setFullscreen(true)
 	love.graphics.setDefaultFilter("nearest", "nearest")

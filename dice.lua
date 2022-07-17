@@ -53,6 +53,7 @@ function CreateDice(world, x, y)
 
     dice.startRolling = function ()
         if dice.hasRolled then return 0 end
+        diceShuffle:play()
         dice.isRolling = true --Dice animation activates
         dice.shrinkScale = 1.2
         dice.destination = {x = dice.x, y = dice.y - DICE_ROLLING_ASCENT}

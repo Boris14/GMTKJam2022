@@ -13,6 +13,8 @@ require("HUD")
 function createGame()
 	local game = {}
 
+	jumpSound = love.audio.newSource( 'assets/sounds/footstep09.ogg', 'static' )
+	diceShuffle = love.audio.newSource( 'assets/sounds/dieShuffle3.ogg', 'static' )
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	game.timer = ROUND_TIME
 	game.timerFont = love.graphics.newFont("assets/font/DiloWorld-mLJLv.ttf", TIMER_FONT_SIZE)
