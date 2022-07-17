@@ -1,6 +1,8 @@
 --For delaying functions 
 local tick = require("libraries.tick")
 
+local background = {}
+
 require("game")
 
 local game
@@ -23,7 +25,11 @@ end
 function love.load()
 	love.window.setFullscreen(true)
 	love.graphics.setDefaultFilter("nearest", "nearest")
-	love.graphics.setBackgroundColor(BG_COLOR)
+	background[1] = love.graphics.newImage("assets/background/bg_layer1.png")
+	background[2] = love.graphics.newImage("assets/background/bg_layer2.png")
+	background[3] = love.graphics.newImage("assets/background/bg_layer3.png")
+	background[4] = love.graphics.newImage("assets/background/bg_layer4.png")
+	-- love.graphics.setBackgroundColor(BG_COLOR)
   	
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
 
@@ -37,5 +43,9 @@ function love.update(dt)
 end
 
 function love.draw()
+	for i,v in ipairs(background) do
+		love.graphics.draw(background[i], 0, -700)		
+	end
+
 	game.draw()
 end
