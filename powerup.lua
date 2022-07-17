@@ -73,9 +73,17 @@ function createPowerupPicker(player)
 	powerup.height = powerup.image:getHeight() * POWERUP_SCALE
 	--Add animation for the picking of the powerup
 	powerup.images = {}
-	powerup.images[1] = love.graphics.newImage("assets/powerups/powerup_jetpack.png")
-	powerup.images[2] = love.graphics.newImage("assets/powerups/powerup_bubble.png")
-	powerup.images[3] = love.graphics.newImage("assets/powerups/powerup_wings.png")
+
+	if player.powerups == 1 then
+		powerup.images[1] = love.graphics.newImage("assets/powerups/powerup_jetpack.png")
+		powerup.images[2] = love.graphics.newImage("assets/powerups/powerup_bubble.png")
+		powerup.images[3] = love.graphics.newImage("assets/powerups/powerup_wings.png")
+	else
+		powerup.images[1] = love.graphics.newImage("assets/powerups/powerup_gold_jetpack.png")
+		powerup.images[2] = love.graphics.newImage("assets/powerups/powerup_gold_bubble.png")
+		powerup.images[3] = love.graphics.newImage("assets/powerups/powerup_gold_wings.png")
+	end
+
 	powerup.frame = 1
 	powerup.anim_speed = 0
 
@@ -106,8 +114,12 @@ function createPowerupPicker(player)
 	end
 
 	powerup.movement = function (player)
+		player.isBoosted = true
 		player.speed = player.speed * POWERUP_MOVEMENT_UPGRADE
-		powerup.tick.delay(function() player.speed = PLAYER_SPEED end, POWERUP_MOVEMENT_DURATION)
+		powerup.tick.delay(function() 
+			player.speed = PLAYER_SPEED 
+			player.isBoosted = false
+		end, POWERUP_MOVEMENT_DURATION)
 	end
 
 	powerup.isDestroyed = false

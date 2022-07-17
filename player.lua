@@ -34,6 +34,10 @@ function createPlayer(world, x, y, controls, sprite)
 	player.isRolling = false
 	player.dice = nil
 
+	player.isBoosted = false
+	player.isFrozen = false
+	player.hasBigJump = false
+
 	--For delaying functions
 	player.tick = require("libraries.tick")
 
@@ -119,6 +123,7 @@ function createPlayer(world, x, y, controls, sprite)
 			player.tick.delay(function() 
 				player.powerupPicker.isChosen = true
 				local frame = player.powerupPicker.frame
+				frame = 1
 				player.powerupPicker.choose(frame)
 				if frame == 1 then -- frame1 == speedup
 					player.powerupPicker.movement(player)
@@ -226,7 +231,6 @@ function createPlayer(world, x, y, controls, sprite)
 	end
 
 	player.draw = function ()
-		--love.graphics.rectangle("line", player.x + 5, player.y, player.size - 5, player.size)
 		if not player.powerupPicker.isDestroyed then player.powerupPicker.draw() end
 		player.anim:draw(player.spriteSheet, player.x, player.y, nil, player.scale, player.scale, 0, 64)
 	end

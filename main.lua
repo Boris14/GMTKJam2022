@@ -21,13 +21,14 @@ function scaleConstants(screenWidth, screenHeight)
 	DICE_ROLLING_ASCENT = DICE_ROLLING_ASCENT * heightScale
 	DICE_HOVER_DISTANCE = DICE_HOVER_DISTANCE * heightScale
 	DICE_SPAWN.y = DICE_SPAWN.y * heightScale
+	POWERUP_SCALE = POWERUP_SCALE * (widthScale + heightScale) / 2
 end
 
 function love.load()
 	local music = love.audio.newSource( 'assets/sounds/background_song.mp3', 'static' )
 	music:setLooping( true ) --so it doesnt stop
 	music:play()
-	love.window.setFullscreen(true)
+	--love.window.setFullscreen(true)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	Font = love.graphics.newFont("assets/font/DiloWorld-mLJLv.ttf", 64)
 	love.graphics.setFont(Font)	
