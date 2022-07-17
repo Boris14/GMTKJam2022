@@ -43,9 +43,7 @@ function createGame()
 			local j = love.math.random(11)
 			if (i == j) then i = i + 1 end
 			table.insert(game.powerups,createPowerupPickup(game.world, POWER_UPS[i].x, POWER_UPS[i].y))
-			table.insert(game.powerups,createPowerupPickup(game.world, POWER_UPS[j].x, POWER_UPS[j].y))
 		end, 15)
-		-- game.powerups = {createPowerupPickup(game.world, .5, .4), createPowerupPickup(game.world, .6, .4)}
 		game.ready = true
 		game.roundFinished = false
 	end
@@ -90,8 +88,7 @@ function createGame()
 		end
 		if not game.ready then
 			if key == START_GAME then
-				print("Im here")
-				game.newRound()
+				game.roundStart()
 			end
 		end
 	end
@@ -156,7 +153,10 @@ function createGame()
 				for i,v in ipairs(game.background) do
 					love.graphics.draw(game.background[i], 0, -700)		
 				end
-				love.graphics.print("The winner is " .. game.winner, 0.5, 0.5)
+				love.graphics.setColor(PLAYER_COLORS[1])
+				love.graphics.printf("The winner is " .. game.winner, 0.25 * love.graphics.getWidth(), 0.2 * love.graphics.getHeight(), love.graphics.getWidth()/2, "center")
+        		love.graphics.printf("Press ESCAPE fast", 0.35 * love.graphics.getWidth(), 0.6 * love.graphics.getHeight(), love.graphics.getWidth()/2, "center", 0, .5, .5)
+				love.graphics.setColor(BASE_COLOR)
 			end
 			return
 		end
