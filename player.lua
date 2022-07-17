@@ -117,11 +117,17 @@ function createPlayer(world, x, y, controls, sprite)
 		elseif key == player.powerUp and player.powerups > 0 then
 			player.powerupPicker = createPowerupPicker(player)
 			player.tick.delay(function() 
-				player.powerupPicker.isDestroyed = true
-				print(player.powerupPicker.frame)
-				if player.powerupPicker.frame == 1 then -- frame1 == speedup
+				player.powerupPicker.isChosen = true
+				local frame = player.powerupPicker.frame
+				player.powerupPicker.choose(frame)
+				if frame == 1 then -- frame1 == speedup
 					player.powerupPicker.movement(player)
+				elseif frame == 2 then
+
+				else --frame == 3
+
 				end
+				player.tick.delay(function() player.powerupPicker.isDestroyed = true end, POWERUP_PICK_DELAY)
 			end, POWERUP_PICKER_TIME)
 		    player.powerups = 0
 		end
