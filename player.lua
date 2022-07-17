@@ -142,6 +142,7 @@ function createPlayer(world, x, y, controls, sprite)
 		player.isJumping = true
 		player.isOnGround = false
 		player.jumpPressed = false
+		jumpSound:play()
 	end
 
 	player.update = function (dt)

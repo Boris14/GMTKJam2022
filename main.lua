@@ -36,6 +36,7 @@ end
 function love.load()
 	local music = love.audio.newSource( 'assets/sounds/background_song.mp3', 'static' )
 	music:setLooping( true ) --so it doesnt stop
+	music:setVolume(0.2)
 	music:play()
 	--love.window.setFullscreen(true)
 	love.graphics.setDefaultFilter("nearest", "nearest")
