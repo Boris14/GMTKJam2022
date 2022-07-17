@@ -109,6 +109,19 @@ function createGame()
 		for i, v in ipairs(game.powerups) do
 			v.update(dt)
 		end
+		if game.player1.freezeOther then
+			game.player2.isFrozen = true
+			game.tick.delay(function() 
+				game.player2.isFrozen = false 
+				game.player1.freezeOther = false
+			end, FREEZE_DURATION)
+		elseif game.player2.freezeOther then
+		    game.player1.isFrozen = true
+		    game.tick.delay(function() 
+		    	game.player1.isFrozen = false 
+		    	game.player2.freezeOther = false
+		    end, FREEZE_DURATION)
+		end
     	game.player1.update(dt)
     	game.player2.update(dt)
 		if game.timer <= 0 then game.stop() end

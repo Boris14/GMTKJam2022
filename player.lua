@@ -37,6 +37,7 @@ function createPlayer(world, x, y, controls, sprite)
 	player.isBoosted = false
 	player.isFrozen = false
 	player.hasBigJump = false
+	player.freezeOther = false
 
 	--For delaying functions
 	player.tick = require("libraries.tick")
@@ -123,14 +124,12 @@ function createPlayer(world, x, y, controls, sprite)
 			player.tick.delay(function() 
 				player.powerupPicker.isChosen = true
 				local frame = player.powerupPicker.frame
-				frame = 1
+				if frame == 3 then frame = math.random(2) end
 				player.powerupPicker.choose(frame)
-				if frame == 1 then -- frame1 == speedup
+				if frame == 1 then -- speedup
 					player.powerupPicker.movement(player)
-				elseif frame == 2 then
-
-				else --frame == 3
-
+				elseif frame == 2 then -- freeze
+					player.freezeOther = true
 				end
 				player.tick.delay(function() player.powerupPicker.isDestroyed = true end, POWERUP_PICK_DELAY)
 			end, POWERUP_PICKER_TIME)
@@ -148,6 +147,10 @@ function createPlayer(world, x, y, controls, sprite)
 	player.update = function (dt)
 		player.tick.update(dt)
 		player.anim:update(dt)
+		if player.isFrozen then
+			player.anim:pause() 
+			return
+		end
 		if not player.isRolling then
 			--Wrap around map
 			if player.x + player.size/2 > love.graphics.getWidth() then
