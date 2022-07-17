@@ -33,10 +33,10 @@ function createPlayer(world, x, y, controls, sprite)
 	--For collision
 	player.isPlayer = true
 	player.filter = function (item, other)
-		if other.isPlayer or other.isDice or other.owner then 
-			return "cross"
+		if other.isPlatform and not other.owner then
+			return "slide"
 		end
-		if not other.owner then return "slide" end
+		return "cross"
 	end
 
 	world:add(player, player.x + 5, player.y, player.size - 5, player.size) 
@@ -164,7 +164,6 @@ function createPlayer(world, x, y, controls, sprite)
 	 		for i = 1, len do
 	 			local other = cols[i].other
 	 			if other.owner == player and player.dice then
-	 				hitsPlatform = true
 	 				if not player.dice.isRolling then 
 	 					player.dice.startRolling() 
 	 					player.isRolling = true
@@ -175,7 +174,7 @@ function createPlayer(world, x, y, controls, sprite)
 	 				if player.isJumping and cols[i].normal.y == 1 then
 	 					player.dy = 0
 	 					player.isJumping = false
-	 				elseif player.dy > 0 and cols[i].normal.y == -1 then --Player hits the ground
+	 				elseif player.dy > 0 and cols[i].normal.y == -1 and not other.owner then --Player hits the ground
 	 					player.isOnGround = true
 	 					playerisJumping = false
 	 				end
