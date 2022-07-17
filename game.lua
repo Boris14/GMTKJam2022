@@ -123,7 +123,7 @@ function createGame()
 			local powerup_img = love.graphics.newImage("assets/powerups/powerup_empty.png")
 			love.graphics.draw(powerup_img, 100, 200)
 		elseif game.player1.powerups == 2 then
-			local powerup_img = love.graphics.newImage("assets/powerups/powerup_bubble.png")
+			local powerup_img = love.graphics.newImage("assets/powerups/powerup_gold.png")
 			love.graphics.draw(powerup_img, 100, 200)
 		end
     	if math.floor(math.fmod(game.timer, 60)) < 10 then

@@ -15,8 +15,6 @@ function createPowerupPickup(world, x, y)
 	powerup.isPowerup = true
 	world:add(powerup, powerup.x, powerup.y, powerup.width, powerup.height)
 
-<<<<<<< HEAD
-=======
 	powerup.tick = require("libraries.tick")
 
 	--Animation
