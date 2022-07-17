@@ -8,8 +8,13 @@ local game
 local menu
 
 function love.keypressed(key, scancode, isrepeat)
+	if key == "escape" then
+    	love.event.quit(0)
+	end
 	menu.handleKeyPressed(key)
-    game.handleKeyPressed(key)
+	if menu.startGame then
+    	game.handleKeyPressed(key)
+    end
 end
 
 function scaleConstants(screenWidth, screenHeight)

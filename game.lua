@@ -78,9 +78,6 @@ function createGame()
 	end
 
 	game.handleKeyPressed = function (key)
-		if key == "escape" then
-      		love.event.quit(0)
-	    end
 	    game.player1.handleKeyPressed(key)
 	    game.player2.handleKeyPressed(key)
 	end
