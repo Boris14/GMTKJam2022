@@ -47,14 +47,40 @@ CONTROLS_2.pickUp = "space"
 PLAYER_SPRITE_1 = "assets/characters/character_male.png"
 PLAYER_SPRITE_2 = "assets/characters/character_female.png"
 
-LEVEL_1 = {{}, {}}
-LEVEL_1[1].x = .7 -- * screenWidth
+LEVEL_1 = {{}, {}, {}, {}, {}, {}, {}, {}}
+LEVEL_1[1].x = .33 -- * screenWidth
 LEVEL_1[1].y = .75 -- * screenHeight
-LEVEL_1[1].image = "assets/platforms/grass/ground_grass_broken.png"
+LEVEL_1[1].image = "assets/platforms/grass/ground_grass_double.png"
 
-LEVEL_1[2].x = .2 -- * screenWidth
-LEVEL_1[2].y = .65 -- * screenHeight
+LEVEL_1[2].x = .05 -- * screenWidth
+LEVEL_1[2].y = .55 -- * screenHeight
 LEVEL_1[2].image = "assets/platforms/grass/ground_grass_small_broken.png"
+
+LEVEL_1[3].x = .85
+LEVEL_1[3].y = .55
+LEVEL_1[3].image = "assets/platforms/grass/ground_grass_small_broken.png"
+
+LEVEL_1[4].x = .41
+LEVEL_1[4].y = .49
+LEVEL_1[4].image = "assets/platforms/grass/ground_grass.png"
+
+LEVEL_1[5].x = -.05
+LEVEL_1[5].y = .35
+LEVEL_1[5].image = "assets/platforms/grass/ground_grass_small.png"
+
+LEVEL_1[6].x = 0.95
+LEVEL_1[6].y = .35
+LEVEL_1[6].image = "assets/platforms/grass/ground_grass_small.png"
+
+LEVEL_1[7].x = .15
+LEVEL_1[7].y = .2
+LEVEL_1[7].image = "assets/platforms/grass/ground_grass.png"
+
+LEVEL_1[8].x = .67
+LEVEL_1[8].y = .2
+LEVEL_1[8].image = "assets/platforms/grass/ground_grass.png"
+
+
 
 GROUND = {{},{},{},{},{},{},{},{},{}}
 GROUND[1].x = 0

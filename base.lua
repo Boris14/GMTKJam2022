@@ -1,6 +1,5 @@
 require("platform")
 
-
 function createBase(world, player, isRight)
 	local base = {}
 	base.platforms = {{},{},{}}

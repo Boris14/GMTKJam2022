@@ -16,7 +16,7 @@ require("platform")
 require("level")
 require("base")
 
-
+local background = {}
 local world = bump.newWorld()
 local scale
 local player1
@@ -53,19 +53,22 @@ end
 function love.load()
 	love.window.setFullscreen(true)
 	love.graphics.setDefaultFilter("nearest", "nearest")
-	love.graphics.setBackgroundColor(BG_COLOR)
+	background[1] = love.graphics.newImage("assets/background/bg_layer1.png")
+	background[2] = love.graphics.newImage("assets/background/bg_layer2.png")
+	background[3] = love.graphics.newImage("assets/background/bg_layer3.png")
+	background[4] = love.graphics.newImage("assets/background/bg_layer4.png")
+	-- love.graphics.setBackgroundColor(BG_COLOR)
   	
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
 
   	--Set the local values
-  player1 = createPlayer(world, 100, 100, CONTROLS_1, PLAYER_SPRITE_1)
-	player2 = createPlayer(world, 200, 100, CONTROLS_2, PLAYER_SPRITE_2)
 	level = createLevel(world, LEVEL_1)
+  	player1 = createPlayer(world, 0.1, 0.7, CONTROLS_1, PLAYER_SPRITE_1)
+	player2 = createPlayer(world, 0.2, 0.8, CONTROLS_2, PLAYER_SPRITE_2)
 	ground = createLevel(world, GROUND)
-	dice = CreateDice(world, 100, 600)
+	dice = CreateDice(world, 0.48, 0.1)
 	base1 = createBase(world, true)
-	level = createLevel(world, LEVEL_1)
-	dice = CreateDice(world, .2, .7)
+
 end
 
 function love.update(dt)
@@ -76,9 +79,12 @@ function love.update(dt)
 end
 
 function love.draw()
+	for i,v in ipairs(background) do
+		love.graphics.draw(background[i], 0, -700)		
+	end
+	level.draw()
+	ground.draw()
 	dice.draw()
     player1.draw()
     player2.draw()
-	level.draw()
-	ground.draw()
 end

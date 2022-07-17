@@ -10,6 +10,10 @@ function createLevel(world, levelTemplate)
 		level[i] = {}
 		level[i] = createPlatform(world, v.x, v.y, v.image)
 	end
+	-- level.background = {}
+	-- level.background[2] = love.graphics.newImage("assets/background/bg_layer2.png")
+	-- level.background[3] = love.graphics.newImage("assets/background/bg_layer3.png")
+	-- level.background[4] = love.graphics.newImage("assets/background/bg_layer4.png")
 
 	--Methods
 	level.draw = function ()
