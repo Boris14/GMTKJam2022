@@ -38,7 +38,7 @@ function love.load()
 	music:setLooping( true ) --so it doesnt stop
 	music:setVolume(0.2)
 	music:play()
-	--love.window.setFullscreen(true)
+	love.window.setFullscreen(true)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	Font = love.graphics.newFont("assets/font/DiloWorld-mLJLv.ttf", 64)
 	love.graphics.setFont(Font)	
