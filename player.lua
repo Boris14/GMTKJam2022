@@ -15,7 +15,6 @@ function createPlayer(world, x, y, controls, sprite)
 	player.size = PLAYER_SIZE
 	player.scale = PLAYER_SIZE / 186
 	player.speed = PLAYER_SPEED
-	player.score = 0
 
 	--Controls
 	player.jump = controls.jump
@@ -23,8 +22,9 @@ function createPlayer(world, x, y, controls, sprite)
 	player.right = controls.right
 	player.pickUp = controls.pickUp
 
-	player.isOnGround = true
+	player.isOnGround = false
 	player.isJumping = false
+	player.isRolling = false
 	player.dice = nil
 
 	--For delaying functions
@@ -33,10 +33,10 @@ function createPlayer(world, x, y, controls, sprite)
 	--For collision
 	player.isPlayer = true
 	player.filter = function (item, other)
-		if other.isPlayer or other.isDice or other.owner then 
-			return "cross"
+		if other.isPlatform and not other.owner then
+			return "slide"
 		end
-		return "slide"
+		return "cross"
 	end
 
 	world:add(player, player.x + 5, player.y, player.size - 5, player.size) 
@@ -63,6 +63,7 @@ function createPlayer(world, x, y, controls, sprite)
 
     player.anim = player.animations.idle
 
+	--Methods
     player.updateAnimation = function()
    		 if player.isJumping then
 			if player.movingRight then
@@ -89,7 +90,6 @@ function createPlayer(world, x, y, controls, sprite)
 		end
 	end
 
-	--Methods
 	player.handleKeyPressed = function (key)
 		if key == player.jump then
 			--Player wants to jump before he has hit the ground
@@ -124,7 +124,10 @@ function createPlayer(world, x, y, controls, sprite)
 		elseif player.x < 0 then
 			player.x = love.graphics.getWidth() - player.size/2
 		end
-		world:update(player, player.x, player.y, player.size, player.size)
+
+		if world:hasItem(player) then
+			world:update(player, player.x, player.y, player.size, player.size)
+		end
 
 		player.movingLeft = love.keyboard.isDown(player.left)
 		player.movingRight = love.keyboard.isDown(player.right)
@@ -152,33 +155,40 @@ function createPlayer(world, x, y, controls, sprite)
 		end
 
 		--Move the player and check collisions
-		local goalX, goalY = player.x + player.dx * dt, player.y + player.dy * dt
-		local actualX, actualY, cols, len = world:move(player, goalX, goalY, player.filter)
- 		player.x, player.y = actualX, actualY
+		if world:hasItem(player) then
+			local goalX, goalY = player.x + player.dx * dt, player.y + player.dy * dt
+			local actualX, actualY, cols, len = world:move(player, goalX, goalY, player.filter)
+	 		player.x, player.y = actualX, actualY
 
- 		local hitsPlatform = false
- 		for i = 1, len do
- 			local other = cols[i].other
- 			if other.owner == player and player.dice then
- 				if not player.dice.isRolling then player.score = player.score + player.dice.startRolling() end
- 			elseif other.isPlatform then
- 				hitsPlatform = true
- 				--Player hits a roof
- 				if player.isJumping and cols[i].normal.y == 1 then
- 					player.dy = 0
- 				elseif player.dy > 0 and cols[i].normal.y == -1 then --Player hits the ground
- 					player.isOnGround = true
- 					playerisJumping = false
- 				end
- 			elseif other.isDice and player.pickUpPressed then
- 			    other.pickUp(player)      
- 			end
+	 		local hitsPlatform = false
+	 		for i = 1, len do
+	 			local other = cols[i].other
+	 			if other.owner == player and player.dice then
+	 				if not player.dice.isRolling then 
+	 					player.dice.startRolling() 
+	 					player.isRolling = true
+	 				end
+	 			elseif other.isPlatform then
+	 				hitsPlatform = true
+	 				--Player hits a roof
+	 				if player.isJumping and cols[i].normal.y == 1 then
+	 					player.dy = 0
+	 					player.isJumping = false
+	 				elseif player.dy > 0 and cols[i].normal.y == -1 and not other.owner then --Player hits the ground
+	 					player.isOnGround = true
+	 					playerisJumping = false
+	 				end
+	 			elseif other.isDice and player.pickUpPressed then
+	 			    other.pickUp(player)      
+	 			end
+	 		end
+
+	 		--Player falls from a platform
+	 		if not hitsPlatform and not player.isJumping and player.isOnGround then
+	 			player.tick.delay(function() player.isOnGround = false end, 0.1)
+	 		end
  		end
 
- 		--Player falls from a platform
- 		if not hitsPlatform and not player.isJumping and player.isOnGround then
- 			player.tick.delay(function() player.isOnGround = false end, 0.1)
- 		end
 
  		player.updateAnimation()
 
@@ -186,8 +196,8 @@ function createPlayer(world, x, y, controls, sprite)
 	end
 
 	player.draw = function ()
-		if player.isOnGround then
-		--	love.graphics.print("Is on ground", 100, 100)
+		if player.touchesBase then
+			love.graphics.print("TOuches Base", 100, 100)
 		end
 		love.graphics.rectangle("line", player.x + 5, player.y, player.size - 5, player.size)
 		player.anim:draw(player.spriteSheet, player.x, player.y, nil, player.scale, player.scale, 0, 64)

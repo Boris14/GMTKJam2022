@@ -42,7 +42,7 @@ function CreateDice(world, x, y)
         end, 2)
         local number = dice.getRandomDice()
         dice.animation:gotoFrame(number)
-        return number
+        dice.value = number
         --For later NUMBERS
     end
 

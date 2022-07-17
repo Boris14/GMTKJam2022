@@ -1,8 +1,6 @@
 --For delaying functions 
 local tick = require("libraries.tick")
 
-local background = {}
-
 require("game")
 
 local game
@@ -26,13 +24,7 @@ function love.load()
 	love.window.setFullscreen(true)
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	Font = love.graphics.newFont("assets/font/DiloWorld-mLJLv.ttf", 64)
-	love.graphics.setFont(Font)
-	background[1] = love.graphics.newImage("assets/background/bg_layer1.png")
-	background[2] = love.graphics.newImage("assets/background/bg_layer2.png")
-	background[3] = love.graphics.newImage("assets/background/bg_layer3.png")
-	background[4] = love.graphics.newImage("assets/background/bg_layer4.png")
-	-- love.graphics.setBackgroundColor(BG_COLOR)
-  	
+	love.graphics.setFont(Font)	
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
 
   --Set the local values
@@ -45,9 +37,5 @@ function love.update(dt)
 end
 
 function love.draw()
-	for i,v in ipairs(background) do
-		love.graphics.draw(background[i], 0, -700)		
-	end
-
 	game.draw()
 end
