@@ -10,9 +10,9 @@ require("base")
 
 function createGame()
 	local game = {}
-	--Timer
+
 	love.graphics.setDefaultFilter("nearest", "nearest")
-	game.timer = 120
+	game.timer = ROUND_TIME
 	game.timerFont = love.graphics.newFont("assets/font/DiloWorld-mLJLv.ttf", 128)
 
 	game.tick = require("libraries.tick")
@@ -98,11 +98,11 @@ function createGame()
 		for i,v in ipairs(game.background) do
 			love.graphics.draw(game.background[i], 0, -700)		
 		end
+		love.graphics.print(math.floor(game.timer/60) .. ":" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, 500, 100)
 		game.ground.draw()
 		game.level.draw()
 		game.base1.draw()
 		game.base2.draw()
-		love.graphics.print(math.floor(game.timer/60) .. ":" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, 500, 100)
 		game.dice.draw()
 		game.player1.draw()
     	game.player2.draw()

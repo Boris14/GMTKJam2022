@@ -47,6 +47,7 @@ function CreateDice(world, x, y)
     end
 
     dice.pickUp = function (player)
+        if dice.isRolling then return end
         if dice.isPickedUpBy then
             dice.isPickedUpBy.dice = nil
             dice.isPickedUpBy.speed = dice.isPickedUpBy.speed / DICE_MOVEMENT_SLOW
