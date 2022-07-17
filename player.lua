@@ -32,7 +32,7 @@ function createPlayer(world, x, y, controls, sprite)
 	--For collision
 	player.isPlayer = true
 	player.filter = function (item, other)
-		if other.isPlayer or other.isDice then 
+		if other.isPlayer or other.isDice or other.isBase then 
 			return "cross"
 		end
 		return "slide"

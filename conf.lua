@@ -48,7 +48,7 @@ PLAYER_SPRITE_1 = "assets/characters/character_male.png"
 PLAYER_SPRITE_2 = "assets/characters/character_female.png"
 
 LEVEL_1 = {{}, {}}
-LEVEL_1[1].x = .7 -- * screenWidth
+LEVEL_1[1].x = .5 -- * screenWidth
 LEVEL_1[1].y = .75 -- * screenHeight
 LEVEL_1[1].image = "assets/platforms/grass/ground_grass_broken.png"
 LEVEL_1[1].scale = 1
@@ -59,7 +59,7 @@ LEVEL_1[2].image = "assets/platforms/grass/ground_grass_small_broken.png"
 LEVEL_1[2].scale = 1
 
 GROUND = {{},{},{}}
-GROUND[1].x = 0
+GROUND[1].x = -0.01
 GROUND[1].y = 0.95
 GROUND[1].image = "assets/platforms/grass/ground_grass.png" 
 GROUND[1].scale = 2

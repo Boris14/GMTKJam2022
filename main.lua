@@ -25,6 +25,7 @@ local level
 local ground
 local dice
 local base1
+local base2
 
 
 function love.keypressed(key, scancode, isrepeat)
@@ -58,9 +59,10 @@ function love.load()
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
 
   --Set the local values
-  	player1 = createPlayer(world, .1, .7, CONTROLS_1, PLAYER_SPRITE_1)
-	player2 = createPlayer(world, .1, .7, CONTROLS_2, PLAYER_SPRITE_2)
-	base1 = createBase(world, false)
+  	base1 = createBase(world, false)
+	base2 = createBase(world, true)
+  	player1 = createPlayer(world, .05, .84, CONTROLS_1, PLAYER_SPRITE_1)
+	player2 = createPlayer(world, .9, .84, CONTROLS_2, PLAYER_SPRITE_2)
 	level = createLevel(world, LEVEL_1)
 	ground = createLevel(world, GROUND)
 	dice = CreateDice(world, .2, .7)
@@ -74,10 +76,11 @@ function love.update(dt)
 end
 
 function love.draw()
-	dice.draw()
-    player1.draw()
-    player2.draw()
+	ground.draw()
 	level.draw()
 	base1.draw()
-	ground.draw()
+	base2.draw()
+	dice.draw()
+	player1.draw()
+    player2.draw()
 end
