@@ -33,9 +33,13 @@ function CreateDice(world, x, y)
         return love.math.random(6)
     end
 
+    dice.destination = {}
+
     dice.startRolling = function ()
         if dice.hasRolled then return 0 end
         dice.isRolling = true --Dice animation activates
+        dice.shrinkScale = 1.2
+        dice.destination = {x = dice.x, y = dice.y - 100}
         tick.delay(function ()
             dice.hasRolled = true
             dice.isRolling = false --Dice animation stops
@@ -63,7 +67,16 @@ function CreateDice(world, x, y)
         
         ---Movement if player has taken it
         if dice.isPickedUpBy then
-            local actualX, actualY, cols, len = world:move(dice, dice.isPickedUpBy.x, dice.isPickedUpBy.y - 40, dice.filter)
+            local goalX
+            local goalY
+            if dice.destination.x then
+                goalX = dice.destination.x
+                goalY = dice.destination.y
+            else
+                goalX = dice.isPickedUpBy.x
+                goalY = dice.isPickedUpBy.y - 40
+            end
+            local actualX, actualY, cols, len = world:move(dice, goalX, goalY, dice.filter)
             dice.x, dice.y = actualX, actualY
         end
     
