@@ -60,6 +60,7 @@ function createPlayer(world, x, y, controls, sprite)
 	player.animations.down_left = player.animations.down_right:clone():flipH()
 	player.animations.up = player.anim8.newAnimation(player.grid(9,1), 0.2)
 	player.animations.down = player.anim8.newAnimation(player.grid(9,5), 0.2)
+	player.animations.win = player.anim8.newAnimation(player.grid(5,3), 0.2)
 
     player.anim = player.animations.idle
 
@@ -87,6 +88,9 @@ function createPlayer(world, x, y, controls, sprite)
 			player.anim = player.animations.left
 		else --Idle
 			player.anim = player.animations.idle
+		end
+		if player.isRolling then
+			player.anim = player.animations.win
 		end
 	end
 

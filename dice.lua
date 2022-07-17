@@ -39,7 +39,7 @@ function CreateDice(world, x, y)
         tick.delay(function ()
             dice.hasRolled = true
             dice.isRolling = false --Dice animation stops
-        end, 2)
+        end, 4)
         local number = dice.getRandomDice()
         dice.animation:gotoFrame(number)
         dice.value = number
