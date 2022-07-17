@@ -95,6 +95,9 @@ function createGame()
 			end
 		end
 		game.dice.update(dt)
+		for i, v in ipairs(game.powerups) do
+			v.update(dt)
+		end
     	game.player1.update(dt)
     	game.player2.update(dt)
 		if game.timer <= 0 then game.stop() end
@@ -116,6 +119,13 @@ function createGame()
 		end
 		game.player1.draw()
     	game.player2.draw()
+		if game.player1.powerups == 1 then
+			local powerup_img = love.graphics.newImage("assets/powerups/powerup_empty.png")
+			love.graphics.draw(powerup_img, 100, 200)
+		elseif game.player1.powerups == 2 then
+			local powerup_img = love.graphics.newImage("assets/powerups/powerup_bubble.png")
+			love.graphics.draw(powerup_img, 100, 200)
+		end
     	if math.floor(math.fmod(game.timer, 60)) < 10 then
     		love.graphics.print(math.floor(game.timer/60) .. ":0" .. math.floor(math.fmod(game.timer, 60)), game.timerFont, TIMER_POSITION.x * love.graphics.getWidth(), TIMER_POSITION.y * love.graphics.getHeight())
     	else
