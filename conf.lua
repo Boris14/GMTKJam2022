@@ -6,6 +6,8 @@ WHITE = {1, 1, 1}
 
 BASE_COLOR = {1, 1, 1}
 
+START_GAME = "space"
+
 
 PLAYER_COLORS = {
     {1, 0.788, 0.235}, --yellow

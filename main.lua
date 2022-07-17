@@ -2,10 +2,13 @@
 local tick = require("libraries.tick")
 
 require("game")
+require("menu")
 
 local game
+local menu
 
 function love.keypressed(key, scancode, isrepeat)
+	menu.handleKeyPressed(key)
     game.handleKeyPressed(key)
 end
 
@@ -36,14 +39,21 @@ function love.load()
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
 
   --Set the local values
-  	game = createGame()
+	menu = createMenu()
+	game = createGame()
 end
 
 function love.update(dt)
-	--tick.update(dt)
-	game.update(dt)
+	-- tick.update(dt)
+	if menu.startGame then
+		game.update(dt)
+	end
 end
 
 function love.draw()
-	game.draw()
+	if menu.startGame then
+		game.draw()
+	else --not in-game
+		menu.draw()
+	end
 end
