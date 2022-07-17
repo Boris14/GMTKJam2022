@@ -16,10 +16,7 @@ function CreateDice(world, x, y)
 
     dice.shrinkScale = 1.2
 
-    --Animation related
-    -- dice.spriteSheet = love.graphics.newImage("assets/dice/diceWhiteSprite.png")
-    -- dice.grid = anim8.newGrid(64, 64, dice.spriteSheet:getWidth(), dice.spriteSheet:getHeight())
-    -- dice.animation = anim8.newAnimation(dice.grid('1-3', 1, '1-3', 2), 0.2)
+    --Animation
     dice.images = {}
     dice.images[1] = love.graphics.newImage("assets/dice/dieWhite1.png")
     dice.images[2] = love.graphics.newImage("assets/dice/dieWhite2.png")
