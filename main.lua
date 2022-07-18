@@ -1,3 +1,5 @@
+io.stdout:setvbuf('no')
+
 --For delaying functions 
 local tick = require("libraries.tick")
 

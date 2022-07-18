@@ -15,6 +15,16 @@ function createPowerupPickup(world, x, y)
 	powerup.isPowerup = true
 	world:add(powerup, powerup.x, powerup.y, powerup.width, powerup.height)
 
+	local actualX, actualY, cols, len = world:check(powerup, powerup.x, powerup.y)
+	for i = 1, len do
+		local other = cols[i].other
+		if other.isPowerup then
+			world:remove(powerup)
+			powerup = nil
+			return powerup
+		end
+	end
+	
 	powerup.tick = require("libraries.tick")
 
 	--Animation

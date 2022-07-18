@@ -42,8 +42,11 @@ function createGame()
 			local i = love.math.random(11)
 			local j = love.math.random(11)
 			if (i == j) then i = i + 1 end
-			table.insert(game.powerups,createPowerupPickup(game.world, POWER_UPS[i].x, POWER_UPS[i].y))
-		end, 15)
+			local newPowerup = createPowerupPickup(game.world, POWER_UPS[i].x, POWER_UPS[i].y)
+			if newPowerup then
+				table.insert(game.powerups,newPowerup)
+			end
+		end, POWERUPS_SPAWN_INTERVAL)
 		game.ready = true
 		game.roundFinished = false
 	end

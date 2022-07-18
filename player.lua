@@ -34,6 +34,7 @@ function createPlayer(world, x, y, controls, sprite)
 	player.isRolling = false
 	player.dice = nil
 
+	player.isActivatingPowerup = false
 	player.isBoosted = false
 	player.isFrozen = false
 	player.hasBigJump = false
@@ -119,7 +120,8 @@ function createPlayer(world, x, y, controls, sprite)
 		elseif key == player.pickUp then
 			player.pickUpPressed = true
 			player.tick.delay(function() player.pickUpPressed = false end, 0.1)
-		elseif key == player.powerUp and player.powerups > 0 then
+		elseif key == player.powerUp and player.powerups > 0 and not player.isActivatingPowerup then
+			player.isActivatingPowerup = true
 			player.powerupPicker = createPowerupPicker(player)
 			player.tick.delay(function() 
 				player.powerupPicker.isChosen = true
@@ -131,9 +133,12 @@ function createPlayer(world, x, y, controls, sprite)
 				elseif frame == 2 then -- freeze
 					player.freezeOther = true
 				end
-				player.tick.delay(function() player.powerupPicker.isDestroyed = true end, POWERUP_PICK_DELAY)
+				player.tick.delay(function() 
+					player.powerupPicker.isDestroyed = true 
+					player.isActivatingPowerup = false
+				end, POWERUP_PICK_DELAY)
+				player.powerups = 0
 			end, POWERUP_PICKER_TIME)
-		    player.powerups = 0
 		end
 	end
 
@@ -199,7 +204,7 @@ function createPlayer(world, x, y, controls, sprite)
 		 		for i = 1, len do
 		 			local other = cols[i].other
 		 			if other.isPowerup then
-		 				if player.powerups >= 2 then break end
+		 				if player.powerups >= 2 then goto continue end
 		 				player.powerups = player.powerups + 1
 		 				other.destroy = true
 		 			elseif other.owner == player and player.dice then
@@ -220,6 +225,7 @@ function createPlayer(world, x, y, controls, sprite)
 		 			elseif other.isDice and player.pickUpPressed then
 		 			    other.pickUp(player)      
 		 			end
+					::continue::
 		 		end
 
 		 		--Player falls from a platform
