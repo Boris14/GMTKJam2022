@@ -38,10 +38,8 @@ function createGame()
 		game.level = createLevel(game.world, LEVEL_1)
 		game.ground = createLevel(game.world, GROUND)
 		game.dice = CreateDice(game.world, DICE_SPAWN.x, DICE_SPAWN.y)
-		game.tick.recur(function ()
+		game.powerupSpawner = game.tick.recur(function ()
 			local i = love.math.random(11)
-			local j = love.math.random(11)
-			if (i == j) then i = i + 1 end
 			local newPowerup = createPowerupPickup(game.world, POWER_UPS[i].x, POWER_UPS[i].y)
 			if newPowerup then
 				table.insert(game.powerups,newPowerup)
@@ -62,10 +60,20 @@ function createGame()
 	game.stop = function ()
 		if not game.ready then return end
 		game.ready = false
+		if game.powerupSpawner then
+			game.powerupSpawner:stop()
+			game.powerupSpawner = nil
+		end
 		game.world:remove(game.player1)
 		game.world:remove(game.player2)
 		game.world:remove(game.dice)
 		game.level.remove(game.world)
+		for i = 1, #game.powerups do
+			if game.world:hasItem(game.powerups[i]) then
+				game.world:remove(game.powerups[i])
+			end
+		end
+		game.powerups = {}
 		game.level = nil
 		game.world = nil
 		game.base1 = nil
@@ -82,15 +90,13 @@ function createGame()
 	end
 
 	game.handleKeyPressed = function (key)
-		if key == "escape" then
-      		love.event.quit(0)
-	    end
 		if game.ready then
 			game.player1.handleKeyPressed(key)
 			game.player2.handleKeyPressed(key)
 		end
 		if not game.ready then
 			if key == START_GAME then
+				game.winner = nil
 				game.roundStart()
 			end
 		end
@@ -105,6 +111,9 @@ function createGame()
 			game.winner = "Nobody"
 		end
 		game.stop()
+		game.timer = ROUND_TIME
+		game.player1Score = 0
+		game.player2Score = 0
 	end
 
 	game.update = function(dt)
@@ -158,7 +167,7 @@ function createGame()
 				end
 				love.graphics.setColor(PLAYER_COLORS[1])
 				love.graphics.printf("The winner is " .. game.winner, 0.25 * love.graphics.getWidth(), 0.2 * love.graphics.getHeight(), love.graphics.getWidth()/2, "center")
-        		love.graphics.printf("Press ESCAPE fast", 0.35 * love.graphics.getWidth(), 0.6 * love.graphics.getHeight(), love.graphics.getWidth()/2, "center", 0, .5, .5)
+        		love.graphics.printf("Press SPACE to play again", 0.35 * love.graphics.getWidth(), 0.6 * love.graphics.getHeight(), love.graphics.getWidth()/2, "center", 0, .5, .5)
 				love.graphics.setColor(BASE_COLOR)
 			end
 			return
@@ -167,7 +176,6 @@ function createGame()
 			love.graphics.draw(game.background[i], 0, -700)		
 		end
 
-		--Scale position
 		game.ground.draw()
 		game.level.draw()
 		game.base1.draw()

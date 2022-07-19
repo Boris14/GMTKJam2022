@@ -13,7 +13,9 @@ function createPowerupPickup(world, x, y)
 	powerup.destroy = false
 
 	powerup.isPowerup = true
-	world:add(powerup, powerup.x, powerup.y, powerup.width, powerup.height)
+	if world then 
+		world:add(powerup, powerup.x, powerup.y, powerup.width, powerup.height)
+	end
 
 	local actualX, actualY, cols, len = world:check(powerup, powerup.x, powerup.y)
 	for i = 1, len do
