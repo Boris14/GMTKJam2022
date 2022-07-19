@@ -9,6 +9,14 @@ require("menu")
 local game
 local menu
 
+music = love.audio.newSource( 'assets/sounds/background_song.mp3', 'static' )
+
+local splashes = {
+  ["o-ten-one"]           = {module="o-ten-one"},
+}
+local splash
+local splashEnded
+
 function love.keypressed(key, scancode, isrepeat)
 	if key == "escape" then
     	love.event.quit(0)
@@ -36,15 +44,25 @@ function scaleConstants(screenWidth, screenHeight)
 end
 
 function love.load()
-	local music = love.audio.newSource( 'assets/sounds/background_song.mp3', 'static' )
-	music:setLooping( true ) --so it doesnt stop
-	music:setVolume(0.2)
-	music:play()
 	love.window.setFullscreen(true)
+	for name, entry in pairs(splashes) do
+       entry.module = require(entry.module)
+       splashes[name] = function ()
+           return entry.module(unpack(entry))
+       end
+    end
+    splash = splashes["o-ten-one"]()
+    splash.onDone = function() 
+       splashEnded = true 
+	   music:play()
+    end
+	
 	love.graphics.setDefaultFilter("nearest", "nearest")
 	Font = love.graphics.newFont("assets/font/DiloWorld-mLJLv.ttf", 64)
 	love.graphics.setFont(Font)	
 	scaleConstants(love.graphics.getWidth(), love.graphics.getHeight())
+    music:setLooping( true ) --so it doesnt stop
+	music:setVolume(0.2)
 
   --Set the local values
 	menu = createMenu()
@@ -52,16 +70,23 @@ function love.load()
 end
 
 function love.update(dt)
-	-- tick.update(dt)
-	if menu.startGame then
-		game.update(dt)
+	if not splashEnded then
+		splash:update(dt)
+	else
+		if menu.startGame then
+			game.update(dt)
+		end
 	end
 end
 
 function love.draw()
-	if menu.startGame then
-		game.draw()
-	else --not in-game
-		menu.draw()
+	if not splashEnded then
+		splash:draw()
+	else
+		if menu.startGame then
+			game.draw()
+		else --not in-game
+			menu.draw()
+		end
 	end
 end
