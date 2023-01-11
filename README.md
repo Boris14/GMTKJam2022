@@ -1,7 +1,7 @@
 # Run for the Dice
 A local PvP platformer. Have fun stealing the dice from your friends and rolling it at your base. 
 
-Game for the GMTK Game Jam 2022 made by Palla Team <br/>
+Game for the GMTK Game Jam 2022 made by Palla Team (me and my friend PG) <br/>
 Link to the game: https://boris-dimitrov.itch.io/run-for-the-dice <br/>
 Used libraries: <br/>
 https://github.com/rxi/tick <br/>
